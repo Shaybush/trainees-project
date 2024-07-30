@@ -14,4 +14,8 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
+  it('should filter data by search', () => {
+
+  });
+
 });

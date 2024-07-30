@@ -5,6 +5,17 @@ html, body {
 }
 body {
   margin: 0;
-  background: #333333;
+  /*background: #333333;*/
+  /*color: #ACACAC;*/
+  background-color: #303030;
+  color: rgba(255, 255, 255, 0.87);
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-app-background {
+  background-color: #303030;
+}
+
+.mat-dark-theme {
+  color: rgba(255, 255, 255, 0.87);
 }

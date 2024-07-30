@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 127.0.6533.72 (Mac OS 10.15.7)" package="" timestamp="2024-07-30T09:02:54" id="0" hostname="Shays-MBP.lan" tests="1" errors="0" failures="0" time="0.042">
+<testsuite name="Chrome Headless 127.0.6533.72 (Mac OS 10.15.7)" package="" timestamp="2024-07-30T17:05:36" id="0" hostname="Shays-MBP.lan" tests="5" errors="0" failures="0" time="0.029">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/127.0.6533.72 Safari/537.36"/>
   </properties>
-  <testcase name="AppComponent should create the app" time="0.042" classname="AppComponent"/>
+  <testcase name="MonitorViewComponent should create" time="0.008" classname="MonitorViewComponent"/>
+  <testcase name="DataViewComponent should create" time="0.003" classname="DataViewComponent"/>
+  <testcase name="AnalysisViewComponent should create" time="0.002" classname="AnalysisViewComponent"/>
+  <testcase name="AppComponent should filter data by search" time="0.008" classname="AppComponent"/>
+  <testcase name="AppComponent should create the app" time="0.008" classname="AppComponent"/>
   <system-out>
     <![CDATA[
 ]]>
