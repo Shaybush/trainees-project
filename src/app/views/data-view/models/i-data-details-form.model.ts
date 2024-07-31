@@ -6,7 +6,7 @@ export interface IDataDetailsFormModel {
   grade: FormControl<number>;
   subject: FormControl<string>;
   email: FormControl<string>;
-  date_joined: FormControl<Date | number>;
+  date_joined: FormControl<Date | number | string>;
   address: FormControl<string>;
   city: FormControl<string>;
   country: FormControl<string>;

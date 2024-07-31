@@ -22,9 +22,17 @@ export class StudentsDataService {
     return this.students$.asObservable();
   }
 
+  getStudentsValue() : IStudentElementModel[] {
+    return this.students$.value;
+  }
+
   setStudents(students: IStudentElementModel[]): void {
     this.students$.next(students);
     LocalStorageUtilsService.setLocalStorageObjectAsValue(ELocalKey.students_ar, students)
+  }
+
+  getNextIndex(): number {
+    return this.students$.value.length + 1;
   }
 
   addStudent(student: IStudentElementModel): void {

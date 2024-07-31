@@ -4,7 +4,7 @@ export interface IStudentElementModel {
   grade: number;
   subject: string;
   email: string;
-  date_joined: Date | number;
+  date_joined: Date | number | string;
   address: string;
   city: string;
   country: string;

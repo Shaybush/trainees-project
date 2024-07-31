@@ -1,1 +1,11 @@
-<p>monitor-view works!</p>
+<div class="monitor-view-wrapper p-3">
+  <mat-card>
+    <mat-card-content>
+      <!-- filters -->
+      <app-monitor-form-header (setFilterOptions)="setFilterOptions($event)"/>
+
+      <!-- table -->
+      <app-monitor-table [monitorTableData]="monitorTableData"/>
+    </mat-card-content>
+  </mat-card>
+</div>

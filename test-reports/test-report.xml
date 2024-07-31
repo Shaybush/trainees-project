@@ -1,32 +1,26 @@
 <?xml version="1.0"?>
-<testsuite name="Chrome Headless 127.0.6533.88 (Mac OS 10.15.7)" package="" timestamp="2024-07-31T13:48:26" id="0" hostname="Shays-MBP.lan" tests="21" errors="0" failures="0" time="0.047">
+<testsuite name="Chrome Headless 127.0.6533.88 (Mac OS 10.15.7)" package="" timestamp="2024-07-31T20:41:38" id="0" hostname="Shays-MBP.lan" tests="16" errors="0" failures="0" time="0.045">
   <properties>
     <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/127.0.6533.88 Safari/537.36"/>
   </properties>
-  <testcase name="AnalysisChartPerSubjectComponent should create" time="0.013" classname="AnalysisChartPerSubjectComponent"/>
-  <testcase name="AnalysisChartOverTimeComponent should create" time="0.004" classname="AnalysisChartOverTimeComponent"/>
-  <testcase name="AnalysisFormHeaderComponent should create" time="0.002" classname="AnalysisFormHeaderComponent"/>
-  <testcase name="EmptyStringPipe should transform text as text without changes" time="0" classname="EmptyStringPipe"/>
-  <testcase name="EmptyStringPipe create an instance" time="0" classname="EmptyStringPipe"/>
-  <testcase name="AnalysisViewComponent should create" time="0.001" classname="AnalysisViewComponent"/>
-  <testcase name="AnalysisChartStudentAverageComponent should create" time="0.002" classname="AnalysisChartStudentAverageComponent"/>
-  <testcase name="AppComponent should create the app" time="0.008" classname="AppComponent"/>
+  <testcase name="EmptyStringPipe create an instance" time="0.001" classname="EmptyStringPipe"/>
+  <testcase name="EmptyStringPipe should transform text as text without changes" time="0.001" classname="EmptyStringPipe"/>
+  <testcase name="NavbarComponent should create" time="0.02" classname="NavbarComponent"/>
+  <testcase name="DefaultDatePipe should handle error transforming date - invalid string" time="0" classname="DefaultDatePipe"/>
   <testcase name="DefaultDatePipe create an instance" time="0" classname="DefaultDatePipe"/>
-  <testcase name="DefaultDatePipe should handle error transforming date - invalid string" time="0.001" classname="DefaultDatePipe"/>
-  <testcase name="DefaultDatePipe should transform time and timestamp hide seconds" time="0" classname="DefaultDatePipe"/>
-  <testcase name="DefaultDatePipe should transform timestamp string with default format" time="0" classname="DefaultDatePipe"/>
-  <testcase name="DefaultDatePipe should transform time string with default format" time="0" classname="DefaultDatePipe"/>
+  <testcase name="DefaultDatePipe should transform time string with default format" time="0.001" classname="DefaultDatePipe"/>
   <testcase name="DefaultDatePipe should return date string with default format" time="0" classname="DefaultDatePipe"/>
-  <testcase name="NavbarComponent should create" time="0.002" classname="NavbarComponent"/>
-  <testcase name="BackgroundByAverageDirective should create an instance" time="0" classname="BackgroundByAverageDirective"/>
-  <testcase name="MonitorViewComponent should create" time="0.001" classname="MonitorViewComponent"/>
-  <testcase name="DataDetailsCardComponent should create" time="0.002" classname="DataDetailsCardComponent"/>
-  <testcase name="DataHeaderComponent should create" time="0.008" classname="DataHeaderComponent"/>
-  <testcase name="MonitorFormHeaderComponent should create" time="0.001" classname="MonitorFormHeaderComponent"/>
-  <testcase name="MonitorTableComponent should create" time="0.002" classname="MonitorTableComponent"/>
+  <testcase name="DefaultDatePipe should transform timestamp string with default format" time="0" classname="DefaultDatePipe"/>
+  <testcase name="DefaultDatePipe should transform time and timestamp hide seconds" time="0" classname="DefaultDatePipe"/>
+  <testcase name="AnalysisChartOverTimeComponent should create" time="0.002" classname="AnalysisChartOverTimeComponent"/>
+  <testcase name="AnalysisFormHeaderComponent should create" time="0.001" classname="AnalysisFormHeaderComponent"/>
+  <testcase name="AppComponent should create the app" time="0.003" classname="AppComponent"/>
+  <testcase name="AnalysisChartPerSubjectComponent should create" time="0.002" classname="AnalysisChartPerSubjectComponent"/>
+  <testcase name="AnalysisChartStudentAverageComponent should create" time="0.001" classname="AnalysisChartStudentAverageComponent"/>
+  <testcase name="AnalysisViewComponent should create" time="0.001" classname="AnalysisViewComponent"/>
+  <testcase name="DataHeaderComponent should create" time="0.012" classname="DataHeaderComponent"/>
   <system-out>
-    <![CDATA[Chrome Headless 127.0.6533.88 (Mac OS 10.15.7) LOG: undefined
-
+    <![CDATA[
 ]]>
   </system-out>
   <system-err/>

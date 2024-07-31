@@ -47,8 +47,14 @@ export class DataViewComponent implements OnInit {
   }
 
   openDetailsCard(student?: IStudentElementModel): void {
-    this.chosenStudent = student ? student : null;
-    this.isDetailsCardOpen = true;
+    this.isDetailsCardOpen = false;
+
+    // reopen details card
+    setTimeout(() => {
+      this.chosenStudent = student ? student : null;
+      this.isDetailsCardOpen = true;
+    }, 100)
+
   }
 
   closeDetailsCard(): void {

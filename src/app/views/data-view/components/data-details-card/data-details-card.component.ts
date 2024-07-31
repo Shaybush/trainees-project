@@ -1,11 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IDataDetailsFormModel} from "../../models/i-data-details-form.model";
 import {MatFormField} from "@angular/material/form-field";
 import {MatInput, MatLabel} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
+import {DateUtilsService} from "../../../../shared/services/util/date-utils.service";
+import {MatButton} from "@angular/material/button";
+import {StudentsDataService} from "../../../../shared/services/students-data.service";
 
 @Component({
   selector: 'app-data-details-card',
@@ -17,7 +20,8 @@ import {MatIcon} from "@angular/material/icon";
     MatFormField,
     MatInput,
     MatLabel,
-    MatIcon
+    MatIcon,
+    MatButton
   ],
   templateUrl: './data-details-card.component.html',
   styleUrl: './data-details-card.component.css'
@@ -28,43 +32,71 @@ export class DataDetailsCardComponent implements OnInit {
   @Output() closeDetailsCard: EventEmitter<void> = new EventEmitter<void>();
   dataDetailsForm: FormGroup<IDataDetailsFormModel>
 
+  constructor(private studentsDataService: StudentsDataService) {
+  }
+
   ngOnInit(): void {
     this.initDataDetailsForm();
   }
 
   initDataDetailsForm(): void {
     this.dataDetailsForm = new FormGroup({
-      id: new FormControl<number>(null),
-      name: new FormControl<string>(''),
-      date_joined: new FormControl<Date | number>(0),
-      city: new FormControl<string>(''),
-      address: new FormControl<string>(''),
-      grade: new FormControl<number>(0),
-      email: new FormControl<string>(''),
-      country: new FormControl<string>(''),
-      zip: new FormControl<number>(null),
-      subject: new FormControl<string>(''),
+      id: new FormControl<number>({ value: null, disabled: true }),
+      name: new FormControl<string>('', [Validators.required]),
+      date_joined: new FormControl<Date | number | string>('', [Validators.required]),
+      city: new FormControl<string>('', [Validators.required]),
+      address: new FormControl<string>('', [Validators.required]),
+      grade: new FormControl<number>(0, [Validators.required]),
+      email: new FormControl<string>('', [Validators.required]),
+      country: new FormControl<string>('', [Validators.required]),
+      zip: new FormControl<number>(null, [Validators.required]),
+      subject: new FormControl<string>('', [Validators.required]),
     });
 
     if(this.chosenStudent) this.updateDataDetailsForm()
   }
 
   updateDataDetailsForm(): void {
-    this.dataDetailsForm.controls.id.patchValue(this.chosenStudent.id);
-    this.dataDetailsForm.controls.name.patchValue(this.chosenStudent.name);
-    this.dataDetailsForm.controls.date_joined.patchValue(this.chosenStudent.date_joined);
-    this.dataDetailsForm.controls.city.patchValue(this.chosenStudent.city);
-    this.dataDetailsForm.controls.address.patchValue(this.chosenStudent.address);
-    this.dataDetailsForm.controls.grade.patchValue(this.chosenStudent.grade);
-    this.dataDetailsForm.controls.email.patchValue(this.chosenStudent.email);
-    this.dataDetailsForm.controls.country.patchValue(this.chosenStudent.country);
-    this.dataDetailsForm.controls.zip.patchValue(this.chosenStudent.zip);
-    this.dataDetailsForm.controls.subject.patchValue(this.chosenStudent.subject);
+    const date_string = DateUtilsService.dateToString(new Date(this.chosenStudent.date_joined));
+    this.dataDetailsForm.patchValue({
+      id: this.chosenStudent.id,
+      name: this.chosenStudent.name,
+      date_joined: date_string,
+      city: this.chosenStudent.city,
+      address: this.chosenStudent.address,
+      grade: this.chosenStudent.grade,
+      email: this.chosenStudent.email,
+      country: this.chosenStudent.country,
+      zip: this.chosenStudent.zip,
+      subject: this.chosenStudent.subject
+    });
   }
 
   dataDetailsSubmit(): void {
-    // todo - check if it's new user or exist user
-    // const student: IStudentElementModel = {id: 123222, name: 'new student', grade: 95, subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 }
-    // this.studentsDataService.addStudent(student)
+    if(this.chosenStudent) {
+      this.editUser();
+      return;
+    }
+    this.newUser();
+  }
+
+  editUser(): void {
+    const edited_data: IStudentElementModel = {...this.dataDetailsForm.value,
+      id: this.chosenStudent.id,
+      grade: Number(this.dataDetailsForm.controls.grade.value)} as IStudentElementModel;
+    const all_students = this.studentsDataService.getStudentsValue();
+    const filteredStudents = all_students.map((student: IStudentElementModel) => {
+      if(student.id === edited_data.id) return {...edited_data, date_joined: DateUtilsService.dateToUnixTime(edited_data.date_joined as string)};
+      return student;
+    })
+    this.studentsDataService.setStudents(filteredStudents);
+    this.closeDetailsCard.emit();
+  }
+
+  newUser(): void {
+    const random_id = this.studentsDataService.getNextIndex();
+    const new_student: IStudentElementModel = {...this.dataDetailsForm.value, id: random_id} as IStudentElementModel;
+    this.studentsDataService.addStudent(new_student);
+    this.closeDetailsCard.emit();
   }
 }
