@@ -12,35 +12,44 @@ import {
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatPaginator} from "@angular/material/paginator";
+import {DatePipe} from "@angular/common";
+import {DefaultDatePipe} from "../../shared/pipes/default-date/default-date.pipe";
+import {EmptyStringPipe} from "../../shared/pipes/empty-string/empty-string.pipe";
 
 export interface PeriodicElement {
   name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  id: number;
+  grade: string;
+  subject: string;
+  email: string;
+  date_joined: Date | number;
+  address: string;
+  city: string;
+  country: string;
+  zip: number
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
+  {id: 1, name: 'Hydrogen', grade: 'H', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 2, name: 'Helium', grade: 'He', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 3, name: 'Lithium', grade: 'Li', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 4, name: 'Beryllium', grade: 'Be', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 5, name: 'Boron', grade: 'B', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 6, name: 'Carbon', grade: 'C', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 7, name: 'Nitrogen', grade: 'N', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 8, name: 'Oxygen', grade: 'O', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 9, name: 'Fluorine', grade: 'F', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 10, name: 'Neon', grade: 'Ne', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 11, name: 'Sodium', grade: 'Na', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 12, name: 'Magnesium', grade: 'Mg', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 13, name: 'Aluminum', grade: 'Al', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 14, name: 'Silicon', grade: 'Si', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 15, name: 'Phosphorus', grade: 'P', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 16, name: 'Sulfur', grade: 'S', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 17, name: 'Chlorine', grade: 'Cl', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 18, name: 'Argon', grade: 'Ar', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 19, name: 'Potassium', grade: 'K', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
+  {id: 20, name: 'Calcium', grade: 'Ca', subject: 'algabra', email: 'shay@gmail.com', date_joined: 1722408543, address: 'bilu 58', city: 'Raanana', country: 'Israel', zip: 123 },
 ];
 
 @Component({
@@ -63,13 +72,16 @@ const ELEMENT_DATA: PeriodicElement[] = [
     MatRowDef,
     MatTable,
     MatHeaderCellDef,
-    MatNoDataRow
+    MatNoDataRow,
+    DatePipe,
+    DefaultDatePipe,
+    EmptyStringPipe
   ],
   templateUrl: './data-view.component.html',
   styleUrl: './data-view.component.css'
 })
 export class DataViewComponent implements AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['ID', 'name', 'date', 'grade', 'subject'];
   selectedRows: PeriodicElement;
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
