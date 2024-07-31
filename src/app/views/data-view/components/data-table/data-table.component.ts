@@ -1,12 +1,61 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {DefaultDatePipe} from "../../../../shared/pipes/default-date/default-date.pipe";
+import {EmptyStringPipe} from "../../../../shared/pipes/empty-string/empty-string.pipe";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef, MatNoDataRow,
+  MatRow, MatRowDef, MatTable, MatTableDataSource
+} from "@angular/material/table";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatIcon} from "@angular/material/icon";
+import {MatInput} from "@angular/material/input";
+import {MatPaginator} from "@angular/material/paginator";
+import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
 
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [],
+  imports: [
+    DefaultDatePipe,
+    EmptyStringPipe,
+    MatCell,
+    MatCellDef,
+    MatColumnDef,
+    MatFormField,
+    MatHeaderCell,
+    MatHeaderRow,
+    MatHeaderRowDef,
+    MatIcon,
+    MatInput,
+    MatLabel,
+    MatPaginator,
+    MatRow,
+    MatRowDef,
+    MatTable,
+    MatHeaderCellDef,
+    MatNoDataRow
+  ],
   templateUrl: './data-table.component.html',
-  styleUrl: './data-table.component.css'
+  styleUrl: './data-table.component.css',
 })
-export class DataTableComponent {
+export class DataTableComponent implements AfterViewInit{
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  @Input({ required: true }) dataSource: MatTableDataSource<IStudentElementModel>;
+  @Input({ required: true }) displayedColumns: string[];
+
+  @Output() removeStudent: EventEmitter<IStudentElementModel> = new EventEmitter<IStudentElementModel>();
+  @Output() openDetailsCard: EventEmitter<IStudentElementModel> = new EventEmitter<IStudentElementModel>();
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  removeStudentByStudentObject(student: IStudentElementModel): void {
+    this.removeStudent.emit(student);
+  }
 }

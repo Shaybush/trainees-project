@@ -26,4 +26,10 @@ export class StudentsDataService {
     this.students$.next(students);
     LocalStorageUtilsService.setLocalStorageObjectAsValue(ELocalKey.students_ar, students)
   }
+
+  addStudent(student: IStudentElementModel): void {
+    const currentStudents = this.students$.getValue();
+    const updatedStudents = [student, ...currentStudents];
+    this.setStudents(updatedStudents);
+  }
 }

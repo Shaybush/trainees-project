@@ -1,1 +1,81 @@
-<p>data-details-card works!</p>
+<div class="data-details-card-wrapper">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="dataDetailsForm"
+            (ngSubmit)="dataDetailsSubmit()">
+        <div class="data-details-card-header">
+          <h2>Student details:</h2>
+          <mat-icon class="data-details-card-header-icon-close" (click)="closeDetailsCard.emit()" aria-label="close header" fontIcon="close"></mat-icon>
+        </div>
+        <div class="data-details-card-body">
+          <div class="data-details-card-left-side">
+            @if (chosenStudent) {
+              <!-- name -->
+              <mat-form-field class="data-details-input">
+                <mat-label>ID</mat-label>
+                <input matInput id="detail_id" [formControl]="dataDetailsForm.controls.id">
+              </mat-form-field>
+            }
+
+            <!-- name -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Name</mat-label>
+              <input matInput id="detail_name" [formControl]="dataDetailsForm.controls.name">
+            </mat-form-field>
+
+            <!-- grade -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Grade</mat-label>
+              <input matInput id="detail_grade" [formControl]="dataDetailsForm.controls.grade">
+            </mat-form-field>
+
+            <!-- email -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Enter your email</mat-label>
+              <input matInput id="detail_email" [formControl]="dataDetailsForm.controls.email">
+            </mat-form-field>
+
+            <!-- date -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Date</mat-label>
+              <input matInput id="detail_date" type="date" [formControl]="dataDetailsForm.controls.date_joined">
+            </mat-form-field>
+          </div>
+
+          <div class="data-details-card-left-side">
+            <!-- address -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Address</mat-label>
+              <input matInput id="detail_address" [formControl]="dataDetailsForm.controls.address">
+            </mat-form-field>
+
+            <!-- city -->
+            <mat-form-field class="data-details-input">
+              <mat-label>City</mat-label>
+              <input matInput id="detail_city" [formControl]="dataDetailsForm.controls.city">
+            </mat-form-field>
+
+            <!-- country -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Country</mat-label>
+              <input matInput id="detail_country" [formControl]="dataDetailsForm.controls.country">
+            </mat-form-field>
+
+            <!-- zip -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Zip</mat-label>
+              <input matInput id="detail_zip" [formControl]="dataDetailsForm.controls.zip">
+            </mat-form-field>
+
+            <!-- subject -->
+            <mat-form-field class="data-details-input">
+              <mat-label>Subject</mat-label>
+              <input matInput id="detail_subject" [formControl]="dataDetailsForm.controls.subject">
+            </mat-form-field>
+          </div>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

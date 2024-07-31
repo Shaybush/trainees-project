@@ -1,0 +1,17 @@
+.data-table-wrapper{
+  .demo-table {
+    width: 100%;
+  }
+
+  .delete-icon:hover {
+    color: #ff4081;
+    transition: 300ms ease-in-out;
+    cursor: pointer;
+  }
+
+  .edit-icon:hover {
+    color: #0000FF;
+    transition: 300ms ease-in-out;
+    cursor: pointer;
+  }
+}

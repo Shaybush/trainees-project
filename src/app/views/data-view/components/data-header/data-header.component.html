@@ -1,1 +1,10 @@
-<p>data-header works!</p>
+<div class="data-header-wrapper d-flex justify-content-between align-items-center">
+  <form class="data-header-form">
+    <!-- todo - move inline style to css file -->
+    <mat-form-field class="data-header-search-input" style="width: 400px">
+      <mat-label>Filter</mat-label>
+      <input matInput placeholder="Search" #input>
+    </mat-form-field>
+  </form>
+      <button class="data-header-button" (click)="addNewStudent()" mat-raised-button >ADD USER</button>
+</div>
