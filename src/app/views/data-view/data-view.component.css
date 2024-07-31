@@ -15,3 +15,8 @@
 .demo-row-is-clicked {
   font-weight: bold;
 }
+
+.delete-icon:hover {
+  color: #ff4081;
+  transition: 300ms ease-in-out;
+}
