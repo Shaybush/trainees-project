@@ -9,13 +9,16 @@ import {IMonitorFilterOptionsModel, IMonitorFormModel} from "../../models/i-moni
 import {StudentsHttpDummyDataService} from "../../../../shared/services/students-http-dummy-data.service";
 import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
 import {ArrayUtilsService} from "../../../../shared/services/util/arrays-utils.service";
-import {debounceTime, distinctUntilChanged, firstValueFrom, take} from "rxjs";
+import {debounceTime, distinctUntilChanged, firstValueFrom, startWith, take} from "rxjs";
 import {MatCheckbox} from "@angular/material/checkbox";
+import {FiltersService} from "../../../../shared/services/filters.service";
+import {IMonitorFiltersModel} from "../../../../shared/models/i-filter.model";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-monitor-form-header',
   standalone: true,
-  imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, FormInputMultiselectComponent, MatCheckbox],
+  imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, FormInputMultiselectComponent, MatCheckbox, MatButton],
   templateUrl: './monitor-form-header.component.html',
   styleUrl: './monitor-form-header.component.css'
 })
@@ -27,7 +30,7 @@ export class MonitorFormHeaderComponent implements OnInit {
   idsSelectOptions: number[];
   namesSelectOptions: string[];
 
-  constructor(private studentsDataService: StudentsHttpDummyDataService) {
+  constructor(private studentsDataService: StudentsHttpDummyDataService, private filtersService: FiltersService) {
   }
 
   ngOnInit(): void {
@@ -49,9 +52,11 @@ export class MonitorFormHeaderComponent implements OnInit {
     this.monitorForm = new FormGroup<IMonitorFormModel>({
       ids: new FormControl<number[]>([]),
       names: new FormControl<string[]>([]),
-      isFailed: new FormControl<boolean>(false),
-      isPassed: new FormControl<boolean>(false),
+      isFailed: new FormControl<boolean>(true),
+      isPassed: new FormControl<boolean>(true),
     })
+    const filters = this.filtersService.monitorFilters;
+    if(filters) this.updateMonitorForm(filters);
   }
 
   initIdsSelectOptions(): void {
@@ -66,11 +71,27 @@ export class MonitorFormHeaderComponent implements OnInit {
   subscribeMonitorFormChanges(): void {
     this.monitorForm.valueChanges
       .pipe(
+        startWith(this.monitorForm.value),
         debounceTime(500),
         distinctUntilChanged(),
       )
       .subscribe((monitorFilters) => {
+        this.filtersService.setMonitorFilters(monitorFilters);
         this.setFilterOptions.emit(monitorFilters as IMonitorFilterOptionsModel);
     })
+  }
+
+  updateMonitorForm(filters: Partial<IMonitorFiltersModel>): void {
+    this.monitorForm.controls.ids.patchValue(filters.ids);
+    this.monitorForm.controls.names.patchValue(filters.names);
+    this.monitorForm.controls.isFailed.patchValue(filters.isFailed);
+    this.monitorForm.controls.isPassed.patchValue(filters.isPassed);
+  }
+
+  resetForm(event: Event): void {
+    event.preventDefault();
+    this.monitorForm.reset();
+    this.monitorForm.controls.isFailed.patchValue(true);
+    this.monitorForm.controls.isPassed.patchValue(true);
   }
 }

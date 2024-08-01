@@ -14,6 +14,7 @@ import {
 import {MatIcon} from "@angular/material/icon";
 import {DecimalPipe} from "@angular/common";
 import {IsPassedDirective} from "../../directives/is-passed.directive";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-monitor-table',
@@ -34,7 +35,8 @@ import {IsPassedDirective} from "../../directives/is-passed.directive";
     MatHeaderCellDef,
     MatNoDataRow,
     DecimalPipe,
-    IsPassedDirective
+    IsPassedDirective,
+    MatProgressSpinner
   ],
   templateUrl: './monitor-table.component.html',
   styleUrl: './monitor-table.component.css'

@@ -94,6 +94,6 @@ export class MonitorViewComponent implements OnInit {
       });
     }
 
-    return data;
+    return [];
   }
 }

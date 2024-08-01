@@ -31,6 +31,19 @@
     <!-- rows -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" [appIsPassed]='row.average'></tr>
 
+    <!-- todo - Loading Row -->
+<!--    @if (true) {-->
+<!--      <tr class="loading-row">-->
+<!--        <td mat-cell colspan="4">-->
+<!--          <div class="loading-spinner-container">-->
+<!--            <mat-spinner diameter="30"></mat-spinner>-->
+<!--            Loading...-->
+<!--          </div>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    }-->
+
+
     <!-- Row shown when there is no matching data -->
     <tr class="mat-row" *matNoDataRow>
       <td class="mat-cell" colspan="4">No data matching the filter</td>

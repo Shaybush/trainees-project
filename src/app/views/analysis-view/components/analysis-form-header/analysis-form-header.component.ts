@@ -7,14 +7,17 @@ import {IAnalysisFilterOptionsModel, IAnalysisFormModel} from "../../models/i-an
 import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
 import {StudentsHttpDummyDataService} from "../../../../shared/services/students-http-dummy-data.service";
 import {ArrayUtilsService} from "../../../../shared/services/util/arrays-utils.service";
-import {debounceTime, distinctUntilChanged} from "rxjs";
+import {debounceTime, distinctUntilChanged, startWith} from "rxjs";
+import {MatButton} from "@angular/material/button";
+import {FiltersService} from "../../../../shared/services/filters.service";
 
 @Component({
   selector: 'app-analysis-form-header',
   standalone: true,
   imports: [
     FormInputMultiselectComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButton
   ],
   templateUrl: './analysis-form-header.component.html',
   styleUrl: './analysis-form-header.component.css'
@@ -27,7 +30,7 @@ export class AnalysisFormHeaderComponent implements OnInit {
   idsSelectOptions: number[];
   subjectsSelectOptions: string[];
 
-  constructor(private studentsDataService: StudentsHttpDummyDataService) {
+  constructor(private studentsDataService: StudentsHttpDummyDataService, private filtersService: FiltersService) {
   }
 
   ngOnInit(): void {
@@ -45,6 +48,9 @@ export class AnalysisFormHeaderComponent implements OnInit {
       ids: new FormControl<number[]>([]),
       subjects: new FormControl<string[]>([]),
     })
+
+    const filters = this.filtersService.analysisFilters;
+    if(filters) this.updateAnalysisForm(filters);
   }
 
   initIdsSelectOptions(): void {
@@ -59,11 +65,18 @@ export class AnalysisFormHeaderComponent implements OnInit {
   subscribeAnalysisFormChanges(): void {
     this.analysisForm.valueChanges
       .pipe(
+        startWith(this.analysisForm.value),
         debounceTime(500),
         distinctUntilChanged(),
       )
       .subscribe((analysisFilters) => {
+        this.filtersService.setAnalysisFilters(analysisFilters);
         this.setFilterOptions.emit(analysisFilters as IAnalysisFilterOptionsModel);
       })
+  }
+
+  updateAnalysisForm(filters: Partial<IAnalysisFilterOptionsModel>): void {
+    this.analysisForm.controls.ids.patchValue(filters.ids);
+    this.analysisForm.controls.subjects.patchValue(filters.subjects);
   }
 }
