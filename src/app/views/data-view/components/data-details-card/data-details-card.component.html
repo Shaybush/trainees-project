@@ -12,31 +12,59 @@
               <!-- id -->
               <mat-form-field class="data-details-input">
                 <mat-label>ID</mat-label>
-                <input matInput id="detail_id" [formControl]="dataDetailsForm.controls.id">
+                <input matInput id="detail_id" type="string" [formControl]="dataDetailsForm.controls.id">
               </mat-form-field>
 
             <!-- name -->
             <mat-form-field class="data-details-input">
               <mat-label>Name</mat-label>
-              <input matInput id="detail_name" [formControl]="dataDetailsForm.controls.name">
+              <input matInput id="detail_name" type="string" [formControl]="dataDetailsForm.controls.name">
+
+              @if (dataDetailsForm.controls.name.hasError('required')) {
+                <mat-error>Name is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
 
             <!-- grade -->
             <mat-form-field class="data-details-input">
               <mat-label>Grade</mat-label>
-              <input matInput id="detail_grade" [formControl]="dataDetailsForm.controls.grade">
+              <input matInput id="detail_grade" type="number" [min]="0" [max]="100" [formControl]="dataDetailsForm.controls.grade">
+
+              @if (dataDetailsForm.controls.grade.hasError('min') && !dataDetailsForm.controls.grade.hasError('required')) {
+                <mat-error>Grade can't be less then 0.</mat-error>
+              }
+              @if (dataDetailsForm.controls.grade.hasError('max') && !dataDetailsForm.controls.grade.hasError('required')) {
+                <mat-error>Grade can't be more then 100.</mat-error>
+              }
+              @if (dataDetailsForm.controls.grade.hasError('required')) {
+                <mat-error>Grade is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
 
             <!-- email -->
             <mat-form-field class="data-details-input">
               <mat-label>Enter your email</mat-label>
-              <input matInput id="detail_email" [formControl]="dataDetailsForm.controls.email">
+              <input matInput id="detail_email" type="string" [formControl]="dataDetailsForm.controls.email">
+
+              @if (dataDetailsForm.controls.email.hasError('email') && !dataDetailsForm.controls.email.hasError('required')) {
+                <mat-error>Please enter a valid email address</mat-error>
+              }
+              @if (dataDetailsForm.controls.email.hasError('required')) {
+                <mat-error>Email is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
 
             <!-- date -->
             <mat-form-field class="data-details-input">
               <mat-label>Date</mat-label>
               <input matInput id="detail_date" type="date" [formControl]="dataDetailsForm.controls.date_joined">
+
+              @if (dataDetailsForm.controls.date_joined.hasError('pattern') && !dataDetailsForm.controls.date_joined.hasError('required')) {
+                <mat-error>Please enter a valid date</mat-error>
+              }
+              @if (dataDetailsForm.controls.date_joined.hasError('required')) {
+                <mat-error>Date is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
           </div>
 
@@ -44,31 +72,51 @@
             <!-- address -->
             <mat-form-field class="data-details-input">
               <mat-label>Address</mat-label>
-              <input matInput id="detail_address" [formControl]="dataDetailsForm.controls.address">
+              <input matInput id="detail_address" type="string" [formControl]="dataDetailsForm.controls.address">
+
+              @if (dataDetailsForm.controls.date_joined.hasError('required')) {
+                <mat-error>Address is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
 
             <!-- city -->
             <mat-form-field class="data-details-input">
               <mat-label>City</mat-label>
-              <input matInput id="detail_city" [formControl]="dataDetailsForm.controls.city">
+              <input matInput id="detail_city" type="string" [formControl]="dataDetailsForm.controls.city">
+
+              @if (dataDetailsForm.controls.city.hasError('required')) {
+                <mat-error>City is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
 
             <!-- country -->
             <mat-form-field class="data-details-input">
               <mat-label>Country</mat-label>
-              <input matInput id="detail_country" [formControl]="dataDetailsForm.controls.country">
+              <input matInput id="detail_country" type="string" [formControl]="dataDetailsForm.controls.country">
+
+              @if (dataDetailsForm.controls.country.hasError('required')) {
+                <mat-error>Country is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
 
             <!-- zip -->
             <mat-form-field class="data-details-input">
               <mat-label>Zip</mat-label>
-              <input matInput id="detail_zip" [formControl]="dataDetailsForm.controls.zip">
+              <input matInput id="detail_zip" type="number" [formControl]="dataDetailsForm.controls.zip">
+
+              @if (dataDetailsForm.controls.zip.hasError('required')) {
+                <mat-error>Zip is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
 
             <!-- subject -->
             <mat-form-field class="data-details-input">
               <mat-label>Subject</mat-label>
-              <input matInput id="detail_subject" [formControl]="dataDetailsForm.controls.subject">
+              <input matInput id="detail_subject" type="string" [formControl]="dataDetailsForm.controls.subject">
+
+              @if (dataDetailsForm.controls.subject.hasError('required')) {
+                <mat-error>Subject is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
           </div>
         </div>

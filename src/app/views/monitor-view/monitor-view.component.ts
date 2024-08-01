@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {MonitorFormHeaderComponent} from "./components/monitor-form-header/monitor-form-header.component";
 import {MonitorTableComponent} from "./components/monitor-table/monitor-table.component";
-import {IMonitorFilterOptionsModel, IMonitorTableDataModel} from "./models/i-monitor-view.model";
+import {
+  IAggregateStudentGradesModel,
+  IMonitorFilterOptionsModel,
+  IMonitorTableDataModel
+} from "./models/i-monitor-view.model";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {IStudentElementModel} from "../../shared/models/i-student-data.model";
 import {StudentsDataService} from "../../shared/services/students-data.service";
@@ -19,6 +23,8 @@ import {StudentsDataService} from "../../shared/services/students-data.service";
   styleUrl: './monitor-view.component.css'
 })
 export class MonitorViewComponent implements OnInit {
+  readonly MIN_AVERAGE: number = 65;
+
   students: IStudentElementModel[];
   monitorTableData: IMonitorTableDataModel[];
   filterOptions: IMonitorFilterOptionsModel;
@@ -56,13 +62,11 @@ export class MonitorViewComponent implements OnInit {
     const result = students.reduce((acc, student) => {
       const { name, grade } = student;
       const key = name.toLowerCase();
-      if (!acc[key]) {
-        acc[key] = {  id: crypto.randomUUID() ,name, totalGrades: 0, exams: 0 };
-      }
+      if (!acc[key]) acc[key] = {  id: crypto.randomUUID() ,name, totalGrades: 0, exams: 0 };
       acc[key].totalGrades += grade;
       acc[key].exams += 1;
       return acc;
-    }, {} as Record<string, { id: string; name: string; totalGrades: number; exams: number }>);
+    }, {} as Record<string, IAggregateStudentGradesModel>);
 
     return Object.values(result).map(item => ({
       id: item.id,
@@ -77,12 +81,8 @@ export class MonitorViewComponent implements OnInit {
 
     if (isFailed || isPassed) {
       return data.filter(item => {
-        if (isFailed && item.average < 65) {
-          return true;
-        }
-        if (isPassed && item.average >= 65) {
-          return true;
-        }
+        if (isFailed && item.average < this.MIN_AVERAGE) return true;
+        if (isPassed && item.average >= this.MIN_AVERAGE) return true;
         return false;
       });
     }

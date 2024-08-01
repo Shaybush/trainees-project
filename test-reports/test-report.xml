@@ -12,7 +12,7 @@
   <testcase name="DefaultDatePipe should return date string with default format" time="0" classname="DefaultDatePipe"/>
   <testcase name="DefaultDatePipe should transform timestamp string with default format" time="0" classname="DefaultDatePipe"/>
   <testcase name="DefaultDatePipe should transform time and timestamp hide seconds" time="0" classname="DefaultDatePipe"/>
-  <testcase name="AnalysisChartOverTimeComponent should create" time="0.002" classname="AnalysisChartOverTimeComponent"/>
+  <testcase name="AnalysisChartComponent should create" time="0.002" classname="AnalysisChartComponent"/>
   <testcase name="AnalysisFormHeaderComponent should create" time="0.001" classname="AnalysisFormHeaderComponent"/>
   <testcase name="AppComponent should create the app" time="0.003" classname="AppComponent"/>
   <testcase name="AnalysisChartPerSubjectComponent should create" time="0.002" classname="AnalysisChartPerSubjectComponent"/>

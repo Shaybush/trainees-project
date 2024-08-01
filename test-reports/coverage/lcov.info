@@ -121,7 +121,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src/app/views/analysis-view/components/analysis-chart-over-time/analysis-chart-over-time.component.ts
+SF:src/app/views/analysis-view/components/analysis-chart-over-time/analysis-chart.component.ts
 FNF:0
 FNH:0
 DA:10,1

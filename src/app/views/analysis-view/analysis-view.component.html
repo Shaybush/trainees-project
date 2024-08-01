@@ -1,1 +1,21 @@
-<p>analysis-view works!</p>
+<div class="analysis-view-wrapper p-3">
+  <mat-card>
+    <mat-card-content>
+      <!-- filters -->
+      <app-analysis-form-header (setFilterOptions)="setFilterOptions($event)" />
+
+      <!-- charts -->
+      <div cdkDropList class="analysis-charts-row" (cdkDropListDropped)="drop($event)">
+        @for (chart of chartsInfo; track chart.name; let last=$last) {
+          <div class="box" cdkDrag>
+            <h2 class="header">{{ chart.name }}</h2>
+            <div class="context">
+              <app-analysis-chart-over-time [chartData]="chart.data" [showData]="!last"/>
+            </div>
+          </div>
+        }
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

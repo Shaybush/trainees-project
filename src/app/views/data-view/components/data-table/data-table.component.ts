@@ -56,6 +56,8 @@ export class DataTableComponent implements AfterViewInit{
   }
 
   removeStudentByStudentObject(student: IStudentElementModel): void {
-    this.removeStudent.emit(student);
+    if(confirm(`Are you sure you want to remove "${student.name}" with id - ${student.id} ?`)) {
+      this.removeStudent.emit(student);
+    }
   }
 }

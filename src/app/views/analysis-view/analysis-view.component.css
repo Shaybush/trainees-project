@@ -1,0 +1,32 @@
+.analysis-view-wrapper{
+  .analysis-charts-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .box {
+    cursor: grab;
+    padding: 6px;
+    flex: 0 0 calc(50% - 5px);
+    border: 1px solid #ccc;
+    transition: transform 0.2s ease; /* Smooth transition for movements */
+    box-sizing: border-box;
+  }
+
+  .box:active {
+    cursor: grabbing;
+  }
+
+  .box.cdk-drag-preview {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  .cdk-drop-list-dragging .box:not(.cdk-drag-placeholder) {
+    opacity: 0.5;
+  }
+
+  .box:nth-child(3) {
+    flex: 0 0 100%;
+  }
+}

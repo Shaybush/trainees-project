@@ -5,7 +5,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular
 import {
   FormInputMultiselectComponent
 } from "../../../../shared/components/form/form-input-multiselect/form-input-multiselect.component";
-import {IMonitorFilterOptionsModel, IMonitorForm} from "../../models/i-monitor-view.model";
+import {IMonitorFilterOptionsModel, IMonitorFormModel} from "../../models/i-monitor-view.model";
 import {StudentsDataService} from "../../../../shared/services/students-data.service";
 import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
 import {ArrayUtilsService} from "../../../../shared/services/util/arrays-utils.service";
@@ -22,7 +22,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
 export class MonitorFormHeaderComponent implements OnInit {
   @Output() setFilterOptions: EventEmitter<IMonitorFilterOptionsModel> = new EventEmitter<IMonitorFilterOptionsModel>();
 
-  monitorForm: FormGroup<IMonitorForm>;
+  monitorForm: FormGroup<IMonitorFormModel>;
   students_list: IStudentElementModel[];
   idsSelectOptions: number[];
   namesSelectOptions: string[];
@@ -39,7 +39,7 @@ export class MonitorFormHeaderComponent implements OnInit {
   }
 
   initMonitorForm(): void {
-    this.monitorForm = new FormGroup<IMonitorForm>({
+    this.monitorForm = new FormGroup<IMonitorFormModel>({
       ids: new FormControl<number[]>([]),
       names: new FormControl<string[]>([]),
       isFailed: new FormControl<boolean>(false),
@@ -66,6 +66,4 @@ export class MonitorFormHeaderComponent implements OnInit {
         this.setFilterOptions.emit(monitorFilters as IMonitorFilterOptionsModel);
     })
   }
-
-  monitorFormSubmit(): void {}
 }
