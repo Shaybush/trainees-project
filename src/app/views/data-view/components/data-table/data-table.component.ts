@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {DefaultDatePipe} from "../../../../shared/pipes/default-date/default-date.pipe";
 import {EmptyStringPipe} from "../../../../shared/pipes/empty-string/empty-string.pipe";
 import {
@@ -43,6 +43,9 @@ import {IStudentElementModel} from "../../../../shared/models/i-student-data.mod
   styleUrl: './data-table.component.css',
 })
 export class DataTableComponent implements AfterViewInit{
+  // todo - check if need to delete
+  constructor(private  cd: ChangeDetectorRef) {}
+  detectChanges = this.cd.detectChanges
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input({ required: true }) dataSource: MatTableDataSource<IStudentElementModel>;

@@ -8,7 +8,9 @@ import {
 } from "./models/i-monitor-view.model";
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {IStudentElementModel} from "../../shared/models/i-student-data.model";
-import {StudentsDataService} from "../../shared/services/students-data.service";
+import {StudentsHttpDummyDataService} from "../../shared/services/students-http-dummy-data.service";
+import {firstValueFrom, take} from "rxjs";
+import {StringUtilsService} from "../../shared/services/util/string-utils.service";
 
 @Component({
   selector: 'app-monitor-view',
@@ -29,12 +31,17 @@ export class MonitorViewComponent implements OnInit {
   monitorTableData: IMonitorTableDataModel[];
   filterOptions: IMonitorFilterOptionsModel;
 
-  constructor(private studentsDataService: StudentsDataService) {
+  constructor(private studentsDataService: StudentsHttpDummyDataService) {
   }
 
   ngOnInit(): void {
-    this.students = this.studentsDataService.getStudentsValue();
-    this.monitorTableData = this.aggregateStudentGrades(this.students);
+      firstValueFrom(this.studentsDataService.getStudents().pipe(take(1),
+      // TODO: takeUntilDestroy
+      )).then((students) => {
+        this.students = students
+        this.monitorTableData = this.aggregateStudentGrades(students);
+      }
+    );
   }
 
   setFilterOptions(filterOptions: IMonitorFilterOptionsModel): void {
@@ -62,7 +69,7 @@ export class MonitorViewComponent implements OnInit {
     const result = students.reduce((acc, student) => {
       const { name, grade } = student;
       const key = name.toLowerCase();
-      if (!acc[key]) acc[key] = {  id: crypto.randomUUID() ,name, totalGrades: 0, exams: 0 };
+      if (!acc[key]) acc[key] = {  id: StringUtilsService.generateGUIDFromUserName(name) ,name, totalGrades: 0, exams: 0 };
       acc[key].totalGrades += grade;
       acc[key].exams += 1;
       return acc;

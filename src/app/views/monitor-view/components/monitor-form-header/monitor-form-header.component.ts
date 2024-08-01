@@ -6,10 +6,10 @@ import {
   FormInputMultiselectComponent
 } from "../../../../shared/components/form/form-input-multiselect/form-input-multiselect.component";
 import {IMonitorFilterOptionsModel, IMonitorFormModel} from "../../models/i-monitor-view.model";
-import {StudentsDataService} from "../../../../shared/services/students-data.service";
+import {StudentsHttpDummyDataService} from "../../../../shared/services/students-http-dummy-data.service";
 import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
 import {ArrayUtilsService} from "../../../../shared/services/util/arrays-utils.service";
-import {debounceTime, distinctUntilChanged} from "rxjs";
+import {debounceTime, distinctUntilChanged, firstValueFrom, take} from "rxjs";
 import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
@@ -23,19 +23,26 @@ export class MonitorFormHeaderComponent implements OnInit {
   @Output() setFilterOptions: EventEmitter<IMonitorFilterOptionsModel> = new EventEmitter<IMonitorFilterOptionsModel>();
 
   monitorForm: FormGroup<IMonitorFormModel>;
-  students_list: IStudentElementModel[];
+  students: IStudentElementModel[];
   idsSelectOptions: number[];
   namesSelectOptions: string[];
 
-  constructor(private studentsDataService: StudentsDataService) {
+  constructor(private studentsDataService: StudentsHttpDummyDataService) {
   }
 
   ngOnInit(): void {
     this.initMonitorForm();
-    this.students_list = this.studentsDataService.getStudentsValue();
-    this.initIdsSelectOptions();
-    this.initNamesSelectOptions();
-    this.subscribeMonitorFormChanges();
+    firstValueFrom(this.studentsDataService.getStudents().pipe(take(1),
+      // TODO: takeUntilDestroy
+    )).then(
+      (x)=> {
+        this.students = x;
+        this.initIdsSelectOptions();
+        this.initNamesSelectOptions();
+        this.subscribeMonitorFormChanges();
+      }
+    );
+
   }
 
   initMonitorForm(): void {
@@ -48,11 +55,11 @@ export class MonitorFormHeaderComponent implements OnInit {
   }
 
   initIdsSelectOptions(): void {
-    this.idsSelectOptions = this.students_list.map(student => student.id)
+    this.idsSelectOptions = this.students.map(student => student.id)
   }
 
   initNamesSelectOptions(): void {
-    const namesListWithDuplicates = this.students_list.map(student => student.name?.toLowerCase());
+    const namesListWithDuplicates = this.students.map(student => student.name?.toLowerCase());
     this.namesSelectOptions = ArrayUtilsService.removeDuplicates(namesListWithDuplicates);
   }
 

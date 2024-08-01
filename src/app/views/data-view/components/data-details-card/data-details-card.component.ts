@@ -8,10 +8,8 @@ import {MatInput, MatLabel} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {DateUtilsService} from "../../../../shared/services/util/date-utils.service";
 import {MatButton} from "@angular/material/button";
-import {StudentsDataService} from "../../../../shared/services/students-data.service";
-
-
-
+import {StudentsHttpDummyDataService} from "../../../../shared/services/students-http-dummy-data.service";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-data-details-card',
@@ -33,13 +31,13 @@ import {StudentsDataService} from "../../../../shared/services/students-data.ser
 export class DataDetailsCardComponent implements OnInit {
   @Input() chosenStudent: IStudentElementModel | null;
   @Output() closeDetailsCard: EventEmitter<void> = new EventEmitter<void>();
+  @Output() setData: EventEmitter<IStudentElementModel[]> = new EventEmitter<IStudentElementModel[]>();
 
-  emailPattern: string = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
   datePattern: string = "^(\\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
 
   dataDetailsForm: FormGroup<IDataDetailsFormModel>
 
-  constructor(private studentsDataService: StudentsDataService) {
+  constructor(private studentsDataService: StudentsHttpDummyDataService) {
   }
 
   ngOnInit(): void {
@@ -65,6 +63,8 @@ export class DataDetailsCardComponent implements OnInit {
   }
 
   updateDataDetailsForm(): void {
+
+
     const date_string = DateUtilsService.dateToString(new Date(this.chosenStudent.date_joined));
     this.dataDetailsForm.patchValue({
       id: this.chosenStudent.id,
@@ -89,24 +89,22 @@ export class DataDetailsCardComponent implements OnInit {
   }
 
   editUser(): void {
-    console.log(this.dataDetailsForm.value)
-    const edited_data: IStudentElementModel = {...this.dataDetailsForm.value,
-      id: this.chosenStudent.id,
-      grade: Number(this.dataDetailsForm.controls.grade.value)} as IStudentElementModel;
+    this.dataDetailsForm.controls.id.enable()
+    this.studentsDataService.putStudent(this.dataDetailsForm.value).pipe(take(1)).subscribe(
+      (students)=> {
+        this.closeDetailsCard.emit()
+        this.setData.emit(students)
+        this.dataDetailsForm.controls.id.disable()
 
-    const all_students = this.studentsDataService.getStudentsValue();
-    const filteredStudents = all_students.map((student: IStudentElementModel) => {
-      if(student.id === edited_data.id) return {...edited_data, date_joined: DateUtilsService.dateToUnixTime(edited_data.date_joined as string)};
-      return student;
-    })
-    this.studentsDataService.setStudents(filteredStudents);
-    this.closeDetailsCard.emit();
+      }
+    );
   }
 
   newUser(): void {
-    const random_id = new Date().getTime();
-    const new_student: IStudentElementModel = {...this.dataDetailsForm.value, id: random_id} as IStudentElementModel;
-    this.studentsDataService.addStudent(new_student);
-    this.closeDetailsCard.emit();
+    this.studentsDataService.postStudent(this.dataDetailsForm.value as IStudentElementModel).pipe(take(1)).subscribe(
+      (students)=> {
+        this.closeDetailsCard.emit()
+        this.setData.emit(students)
+      });
   }
 }

@@ -1,12 +1,13 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MatCard, MatCardContent} from "@angular/material/card";
 import {IStudentElementModel} from "../../shared/models/i-student-data.model";
-import {StudentsDataService} from "../../shared/services/students-data.service";
+import {StudentsHttpDummyDataService} from "../../shared/services/students-http-dummy-data.service";
 import {DataDetailsCardComponent} from "./components/data-details-card/data-details-card.component";
 import {DataHeaderComponent} from "./components/data-header/data-header.component";
 import {DataTableComponent} from "./components/data-table/data-table.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {displayedColumnsConfig} from "./config/data-table.config";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-data-view',
@@ -27,8 +28,13 @@ export class DataViewComponent implements OnInit {
   displayedColumns: string[] = displayedColumnsConfig;
   dataSource: MatTableDataSource<IStudentElementModel> = new MatTableDataSource<IStudentElementModel>();
   chosenStudent: IStudentElementModel | null = null;
+  // todo - check remove
+  @ViewChild(DataTableComponent) dataTableComponent!: DataTableComponent;
 
-  constructor(private studentsDataService: StudentsDataService) {
+
+
+
+  constructor(private studentsDataService: StudentsHttpDummyDataService,private  cd :  ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -38,12 +44,21 @@ export class DataViewComponent implements OnInit {
   subscribeStudents(): void {
     this.studentsDataService.getStudents().subscribe(students => {
       this.dataSource.data = students;
+
     })
   }
 
+
+  setStudents(students: IStudentElementModel[]): void {
+    this.dataSource.data = students;
+    this.cd.detectChanges();
+    this.dataTableComponent.detectChanges()
+  }
+
+
   removeStudent(student: IStudentElementModel): void {
-    const filteredStudents = this.dataSource.data.filter(dataStudent => dataStudent.id !== student.id);
-    this.studentsDataService.setStudents(filteredStudents);
+    this.studentsDataService.deleteStudent(student).pipe(take(1)).subscribe(updatedStudents=>
+    this.dataSource.data = updatedStudents)
   }
 
   openDetailsCard(student?: IStudentElementModel): void {

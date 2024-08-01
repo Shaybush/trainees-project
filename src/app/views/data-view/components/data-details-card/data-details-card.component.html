@@ -5,7 +5,7 @@
             (ngSubmit)="dataDetailsSubmit()">
         <div class="data-details-card-header">
           <h2>Student details:</h2>
-          <mat-icon class="data-details-card-header-icon-close" (click)="closeDetailsCard.emit()" aria-label="close header" fontIcon="close"></mat-icon>
+          <mat-icon class="data-details-card-header-icon-close" type="button" (click)="closeDetailsCard.emit()" aria-label="close header" fontIcon="close"></mat-icon>
         </div>
         <div class="data-details-card-body">
           <div class="data-details-card-left-side">
@@ -121,7 +121,7 @@
           </div>
         </div>
 
-        <button class="data-details-card-button" type="submit" mat-raised-button [disabled]="dataDetailsForm.invalid">Submit</button>
+        <button class="data-details-card-button"  type="submit" mat-raised-button [disabled]="dataDetailsForm.invalid">Submit</button>
       </form>
     </mat-card-content>
   </mat-card>

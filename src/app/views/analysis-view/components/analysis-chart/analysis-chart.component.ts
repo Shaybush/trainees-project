@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { EChartsOption } from 'echarts';
 import {IAnalysisChartDataModel, IChartDataValuesModel} from "../../models/i-analysis-view.model";
 import {NgxEchartsDirective} from "ngx-echarts";
@@ -6,22 +6,32 @@ import {NgxEchartsDirective} from "ngx-echarts";
 @Component({
   selector: 'app-analysis-chart-over-time',
   standalone: true,
-  imports: [
-    NgxEchartsDirective
-  ],
+  imports: [NgxEchartsDirective],
   templateUrl: './analysis-chart.component.html',
   styleUrl: './analysis-chart.component.css'
 })
 
 export class AnalysisChartComponent implements OnInit {
   @Input({ required: true }) chartData: IAnalysisChartDataModel[];
-  @Input() showData: boolean = false;
+  @Input()
+  set hideData(value: boolean) {
+    this.isLoading = true;
+    // todo - improve later
+    setTimeout(()=>{
+      this.isLoading = false;
+      this._hideData = value
+    })
+  }
+  get hideData(): boolean {
+    return this._hideData;
+  }
 
+  isLoading?: boolean
+  private  _hideData: boolean;
   chartOption: EChartsOption;
 
   ngOnInit(): void {
-    console.log(this.showData)
-    if(this.showData) this.initChartOptions();
+      this.initChartOptions();
   }
 
   private initChartOptions(): void {
