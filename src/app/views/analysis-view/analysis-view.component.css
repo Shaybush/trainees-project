@@ -1,4 +1,4 @@
-.analysis-view-wrapper{
+.analysis-view-wrapper {
   .analysis-charts-row {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -20,14 +20,14 @@
   }
 
   .box.cdk-drag-preview {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 
   .cdk-drop-list-dragging .box:not(.cdk-drag-placeholder) {
     opacity: 0.5;
   }
 
-   .box:nth-child(3n) {
+  .box:nth-child(3n) {
     grid-column: span 2;
   }
 }

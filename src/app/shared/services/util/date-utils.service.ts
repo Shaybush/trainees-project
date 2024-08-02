@@ -1,4 +1,4 @@
-import {IStudentElementModel} from "../../models/i-student-data.model";
+import { IStudentElementModel } from '../../models/i-student-data.model';
 
 /**
  * Utility methods for dates.

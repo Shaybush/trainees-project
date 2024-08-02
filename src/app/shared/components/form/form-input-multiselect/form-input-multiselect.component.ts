@@ -1,7 +1,11 @@
-import {Component, Input} from '@angular/core';
-import {MatFormField, MatLabel} from "@angular/material/form-field";
-import {MatOption, MatSelect, MatSelectTrigger} from "@angular/material/select";
-import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import { Component, Input } from '@angular/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import {
+  MatOption,
+  MatSelect,
+  MatSelectTrigger,
+} from '@angular/material/select';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form-input-multiselect',
@@ -12,10 +16,10 @@ import {FormControl, ReactiveFormsModule} from "@angular/forms";
     MatOption,
     ReactiveFormsModule,
     MatLabel,
-    MatSelectTrigger
+    MatSelectTrigger,
   ],
   templateUrl: './form-input-multiselect.component.html',
-  styleUrl: './form-input-multiselect.component.css'
+  styleUrl: './form-input-multiselect.component.css',
 })
 export class FormInputMultiselectComponent {
   @Input({ required: true }) optionList: string[] | number[];

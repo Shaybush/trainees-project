@@ -8,13 +8,12 @@ describe('AnalysisChartOverTimeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AnalysisChartBarComponent]
-    })
-    .compileComponents();
+      imports: [AnalysisChartBarComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AnalysisChartBarComponent);
     component = fixture.componentInstance;
-    component.chartData = []
+    component.chartData = [];
 
     fixture.detectChanges();
   });

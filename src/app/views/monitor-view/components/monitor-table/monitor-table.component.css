@@ -1,9 +1,9 @@
 .monitor-table-wrapper {
-  .bg-danger{
+  .bg-danger {
     background-color: #f44336;
   }
 
   .bg-success {
-    background-color: #4CAF50;
+    background-color: #4caf50;
   }
 }

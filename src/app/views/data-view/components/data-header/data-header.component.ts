@@ -1,34 +1,28 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MatFormField, MatLabel} from "@angular/material/form-field";
-import {MatInput} from "@angular/material/input";
-import {MatButton} from "@angular/material/button";
-import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {IDataHeaderFormModel} from "../../models/i-data-details-form.model";
-import {FiltersService} from "../../../../shared/services/filters.service";
-import {IAnalysisFilterOptionsModel} from "../../../analysis-view/models/i-analysis-view.model";
-import {debounceTime, distinctUntilChanged, startWith} from "rxjs";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { IStudentElementModel } from '../../../../shared/models/i-student-data.model';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { IDataHeaderFormModel } from '../../models/i-data-details-form.model';
+import { FiltersService } from '../../../../shared/services/filters.service';
+import { IAnalysisFilterOptionsModel } from '../../../analysis-view/models/i-analysis-view.model';
+import { debounceTime, distinctUntilChanged, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-data-header',
   standalone: true,
-  imports: [
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatButton,
-    ReactiveFormsModule
-  ],
+  imports: [MatFormField, MatInput, MatLabel, MatButton, ReactiveFormsModule],
   templateUrl: './data-header.component.html',
-  styleUrl: './data-header.component.css'
+  styleUrl: './data-header.component.css',
 })
 export class DataHeaderComponent implements OnInit {
   dataHeaderForm: FormGroup<IDataHeaderFormModel>;
   @Output() applyFilter: EventEmitter<string> = new EventEmitter<string>();
-  @Output() openDetailsCard: EventEmitter<IStudentElementModel | null> = new EventEmitter<IStudentElementModel | null>();
+  @Output() openDetailsCard: EventEmitter<IStudentElementModel | null> =
+    new EventEmitter<IStudentElementModel | null>();
 
-  constructor(private filtersService: FiltersService) {
-  }
+  constructor(private filtersService: FiltersService) {}
 
   ngOnInit(): void {
     this.initDataHeaderForm();
@@ -37,11 +31,11 @@ export class DataHeaderComponent implements OnInit {
 
   initDataHeaderForm(): void {
     this.dataHeaderForm = new FormGroup<IDataHeaderFormModel>({
-      search: new FormControl<string>(""),
-    })
+      search: new FormControl<string>(''),
+    });
 
     const filter = this.filtersService.getDataSearchFilter();
-    if(filter) this.updateAnalysisForm(filter);
+    if (filter) this.updateAnalysisForm(filter);
   }
 
   updateAnalysisForm(filter: string): void {
@@ -55,10 +49,10 @@ export class DataHeaderComponent implements OnInit {
         debounceTime(1000),
         distinctUntilChanged(),
       )
-      .subscribe((filter) => {
+      .subscribe(filter => {
         this.filtersService.setDataSearchFilter(filter.search);
         this.applyFilter.emit(filter.search);
-      })
+      });
   }
 
   addNewStudent(): void {

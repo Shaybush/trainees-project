@@ -1,5 +1,5 @@
-import {FormControl} from "@angular/forms";
-import {IStudentElementModel} from "../../../shared/models/i-student-data.model";
+import { FormControl } from '@angular/forms';
+import { IStudentElementModel } from '../../../shared/models/i-student-data.model';
 
 export interface IDataDetailsFormModel {
   id: FormControl<IStudentElementModel['id']>;

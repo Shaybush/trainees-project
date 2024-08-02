@@ -21,11 +21,11 @@ export class StringUtilsService {
     const hash = hashCode(userName);
 
     // Generate parts of the GUID
-    const part1 = padZeroes((hash & 0xFFFFFFFF) >>> 0, 8);
-    const part2 = padZeroes((hash & 0xFFFF) >>> 0, 4);
-    const part3 = padZeroes((hash & 0x0FFF) >>> 0, 4);
-    const part4 = padZeroes((hash & 0xFFFF) >>> 0, 4);
-    const part5 = padZeroes((hash & 0xFFFFFFFFFFFF) >>> 0, 12);
+    const part1 = padZeroes((hash & 0xffffffff) >>> 0, 8);
+    const part2 = padZeroes((hash & 0xffff) >>> 0, 4);
+    const part3 = padZeroes((hash & 0x0fff) >>> 0, 4);
+    const part4 = padZeroes((hash & 0xffff) >>> 0, 4);
+    const part5 = padZeroes((hash & 0xffffffffffff) >>> 0, 12);
 
     // Combine parts into GUID format
     const guid = `${part1}-${part2}-${part3}-${part4}-${part5}`;

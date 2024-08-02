@@ -1,13 +1,23 @@
-import {Directive, ElementRef, Input, OnChanges, OnInit, Renderer2} from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 
 @Directive({
   selector: '[appIsPassed]',
   standalone: true,
 })
-export class IsPassedDirective implements OnChanges{
+export class IsPassedDirective implements OnChanges {
   @Input('appIsPassed') grade: number;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+  ) {}
 
   ngOnChanges(): void {
     if (this.grade > 65) {

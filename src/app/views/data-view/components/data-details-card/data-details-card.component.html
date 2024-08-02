@@ -65,6 +65,10 @@
               @if (dataDetailsForm.controls.date.hasError('required')) {
                 <mat-error>Date is <strong>required</strong></mat-error>
               }
+
+              @if (dataDetailsForm.controls.date.hasError('invalidYear')) {
+                <mat-error>{{ dataDetailsForm.controls.date.getError('invalidYear').message }}</mat-error>
+              }
             </mat-form-field>
           </div>
 

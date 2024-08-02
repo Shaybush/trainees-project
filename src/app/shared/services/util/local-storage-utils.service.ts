@@ -1,4 +1,4 @@
-import {ELocalKey} from "../../enums/e-local-key.enum";
+import { ELocalKey } from '../../enums/e-local-key.enum';
 
 /**
  * Utility methods for browser local storage.
@@ -49,6 +49,8 @@ export class LocalStorageUtilsService {
    * Remove all values related to the app from local storage.
    * */
   static cleanLocalStorageValues(): void {
-    Object.keys(ELocalKey).forEach(key => this.removeLocalStorageValue(<ELocalKey>key));
+    Object.keys(ELocalKey).forEach(key =>
+      this.removeLocalStorageValue(<ELocalKey>key),
+    );
   }
 }

@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {MonitorFormHeaderComponent} from "./components/monitor-form-header/monitor-form-header.component";
-import {MonitorTableComponent} from "./components/monitor-table/monitor-table.component";
+import { Component, OnInit } from '@angular/core';
+import { MonitorFormHeaderComponent } from './components/monitor-form-header/monitor-form-header.component';
+import { MonitorTableComponent } from './components/monitor-table/monitor-table.component';
 import {
   IAggregateStudentGradesModel,
   IMonitorFilterOptionsModel,
-  IMonitorTableDataModel
-} from "./models/i-monitor-view.model";
-import {MatCard, MatCardContent} from "@angular/material/card";
-import {IStudentElementModel} from "../../shared/models/i-student-data.model";
-import {StudentsHttpDummyDataService} from "../../shared/services/students-http-dummy-data.service";
-import {firstValueFrom, take} from "rxjs";
-import {StringUtilsService} from "../../shared/services/util/string-utils.service";
+  IMonitorTableDataModel,
+} from './models/i-monitor-view.model';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { IStudentElementModel } from '../../shared/models/i-student-data.model';
+import { StudentsHttpDummyDataService } from '../../shared/services/students-http-dummy-data.service';
+import { firstValueFrom, take } from 'rxjs';
+import { StringUtilsService } from '../../shared/services/util/string-utils.service';
 
 @Component({
   selector: 'app-monitor-view',
@@ -19,10 +19,10 @@ import {StringUtilsService} from "../../shared/services/util/string-utils.servic
     MonitorFormHeaderComponent,
     MonitorTableComponent,
     MatCard,
-    MatCardContent
+    MatCardContent,
   ],
   templateUrl: './monitor-view.component.html',
-  styleUrl: './monitor-view.component.css'
+  styleUrl: './monitor-view.component.css',
 })
 export class MonitorViewComponent implements OnInit {
   readonly MIN_AVERAGE: number = 65;
@@ -31,17 +31,18 @@ export class MonitorViewComponent implements OnInit {
   monitorTableData: IMonitorTableDataModel[];
   filterOptions: IMonitorFilterOptionsModel;
 
-  constructor(private studentsDataService: StudentsHttpDummyDataService) {
-  }
+  constructor(private studentsDataService: StudentsHttpDummyDataService) {}
 
   ngOnInit(): void {
-      firstValueFrom(this.studentsDataService.getStudents().pipe(take(1),
-      // TODO: takeUntilDestroy
-      )).then((students) => {
-        this.students = students
-        this.monitorTableData = this.aggregateStudentGrades(students);
-      }
-    );
+    firstValueFrom(
+      this.studentsDataService.getStudents().pipe(
+        take(1),
+        // TODO: takeUntilDestroy
+      ),
+    ).then(students => {
+      this.students = students;
+      this.monitorTableData = this.aggregateStudentGrades(students);
+    });
   }
 
   setFilterOptions(filterOptions: IMonitorFilterOptionsModel): void {
@@ -60,20 +61,34 @@ export class MonitorViewComponent implements OnInit {
 
     return this.students.filter(student => {
       const matchId = !ids || ids.length === 0 || ids.includes(student.id);
-      const matchName = !names || names.length === 0 || names.includes(student.name.toLowerCase());
+      const matchName =
+        !names ||
+        names.length === 0 ||
+        names.includes(student.name.toLowerCase());
       return matchId && matchName;
     });
   }
 
-  private aggregateStudentGrades(students: IStudentElementModel[]): IMonitorTableDataModel[] {
-    const result = students.reduce((acc, student) => {
-      const { name, grade } = student;
-      const key = name.toLowerCase();
-      if (!acc[key]) acc[key] = {  id: StringUtilsService.generateGUIDFromUserName(name) ,name, totalGrades: 0, exams: 0 };
-      acc[key].totalGrades += grade;
-      acc[key].exams += 1;
-      return acc;
-    }, {} as Record<string, IAggregateStudentGradesModel>);
+  private aggregateStudentGrades(
+    students: IStudentElementModel[],
+  ): IMonitorTableDataModel[] {
+    const result = students.reduce(
+      (acc, student) => {
+        const { name, grade } = student;
+        const key = name.toLowerCase();
+        if (!acc[key])
+          acc[key] = {
+            id: StringUtilsService.generateGUIDFromUserName(name),
+            name,
+            totalGrades: 0,
+            exams: 0,
+          };
+        acc[key].totalGrades += grade;
+        acc[key].exams += 1;
+        return acc;
+      },
+      {} as Record<string, IAggregateStudentGradesModel>,
+    );
 
     return Object.values(result).map(item => ({
       id: item.id,
@@ -83,7 +98,9 @@ export class MonitorViewComponent implements OnInit {
     }));
   }
 
-  private filterByPassFail(data: IMonitorTableDataModel[]): IMonitorTableDataModel[] {
+  private filterByPassFail(
+    data: IMonitorTableDataModel[],
+  ): IMonitorTableDataModel[] {
     const { isFailed, isPassed } = this.filterOptions;
 
     if (isFailed || isPassed) {

@@ -1,20 +1,24 @@
-import {Component, Input} from '@angular/core';
-import {IMonitorTableDataModel} from "../../models/i-monitor-view.model";
-import {DefaultDatePipe} from "../../../../shared/pipes/default-date/default-date.pipe";
-import {EmptyStringPipe} from "../../../../shared/pipes/empty-string/empty-string.pipe";
+import { Component, Input } from '@angular/core';
+import { IMonitorTableDataModel } from '../../models/i-monitor-view.model';
+import { DefaultDatePipe } from '../../../../shared/pipes/default-date/default-date.pipe';
+import { EmptyStringPipe } from '../../../../shared/pipes/empty-string/empty-string.pipe';
 import {
   MatCell,
   MatCellDef,
   MatColumnDef,
-  MatHeaderCell, MatHeaderCellDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatHeaderRowDef, MatNoDataRow,
-  MatRow, MatRowDef, MatTable
-} from "@angular/material/table";
-import {MatIcon} from "@angular/material/icon";
-import {DecimalPipe} from "@angular/common";
-import {IsPassedDirective} from "../../directives/is-passed.directive";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
+  MatHeaderRowDef,
+  MatNoDataRow,
+  MatRow,
+  MatRowDef,
+  MatTable,
+} from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { DecimalPipe } from '@angular/common';
+import { IsPassedDirective } from '../../directives/is-passed.directive';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-monitor-table',
@@ -36,10 +40,10 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     MatNoDataRow,
     DecimalPipe,
     IsPassedDirective,
-    MatProgressSpinner
+    MatProgressSpinner,
   ],
   templateUrl: './monitor-table.component.html',
-  styleUrl: './monitor-table.component.css'
+  styleUrl: './monitor-table.component.css',
 })
 export class MonitorTableComponent {
   @Input() monitorTableData: IMonitorTableDataModel[];

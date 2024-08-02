@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -16,7 +16,7 @@ describe('AppComponent', () => {
             },
           },
         },
-      ]
+      ],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(AppComponent);

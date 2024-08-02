@@ -8,5 +8,5 @@ export interface IStudentElementModel {
   address: string;
   city: string;
   country: string;
-  zip: number
+  zip: number;
 }

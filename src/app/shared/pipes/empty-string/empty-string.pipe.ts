@@ -15,10 +15,15 @@ export class EmptyStringPipe implements PipeTransform {
    * @param {string | number} str - string or number which can be empty
    * @param {string} defaultValue - what value should be displayed when empty
    */
-  transform(str: string | number, defaultValue: string = emptyStringStr.emptyStringLabel): string {
+  transform(
+    str: string | number,
+    defaultValue: string = emptyStringStr.emptyStringLabel,
+  ): string {
     switch (typeof str) {
       case 'number':
-        return str !== undefined && str !== null ? str.toString() : defaultValue;
+        return str !== undefined && str !== null
+          ? str.toString()
+          : defaultValue;
       case 'string':
         return !!str && !!str.trim() ? str : defaultValue;
       default:

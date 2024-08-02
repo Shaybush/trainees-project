@@ -1,15 +1,21 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {MatCard, MatCardContent} from "@angular/material/card";
-import {IStudentElementModel} from "../../shared/models/i-student-data.model";
-import {StudentsHttpDummyDataService} from "../../shared/services/students-http-dummy-data.service";
-import {DataDetailsCardComponent} from "./components/data-details-card/data-details-card.component";
-import {DataHeaderComponent} from "./components/data-header/data-header.component";
-import {DataTableComponent} from "./components/data-table/data-table.component";
-import {MatTableDataSource} from "@angular/material/table";
-import {displayedColumnsConfig} from "./config/data-table.config";
-import {take} from "rxjs";
-import {TableFiltersServiceService} from "../../core/services/filter.service";
-import {MatchMode} from "../../core/services/filter.type";
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { IStudentElementModel } from '../../shared/models/i-student-data.model';
+import { StudentsHttpDummyDataService } from '../../shared/services/students-http-dummy-data.service';
+import { DataDetailsCardComponent } from './components/data-details-card/data-details-card.component';
+import { DataHeaderComponent } from './components/data-header/data-header.component';
+import { DataTableComponent } from './components/data-table/data-table.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { displayedColumnsConfig } from './config/data-table.config';
+import { take } from 'rxjs';
+import { TableFiltersServiceService } from '../../core/services/filter.service';
+import { MatchMode } from '../../core/services/filter.type';
 
 @Component({
   selector: 'app-data-view',
@@ -23,21 +29,22 @@ import {MatchMode} from "../../core/services/filter.type";
   ],
   templateUrl: './data-view.component.html',
   styleUrl: './data-view.component.css',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DataViewComponent implements OnInit {
   isDetailsCardOpen: boolean = false;
   displayedColumns: string[] = displayedColumnsConfig;
-  dataSource: MatTableDataSource<IStudentElementModel> = new MatTableDataSource<IStudentElementModel>();
+  dataSource: MatTableDataSource<IStudentElementModel> =
+    new MatTableDataSource<IStudentElementModel>();
   chosenStudent: IStudentElementModel | null = null;
   // todo - check remove
   @ViewChild(DataTableComponent) dataTableComponent!: DataTableComponent;
 
-
-  constructor(private studentsDataService: StudentsHttpDummyDataService,private  cd :  ChangeDetectorRef,
-              private  filterService : TableFiltersServiceService
-              ) {
-  }
+  constructor(
+    private studentsDataService: StudentsHttpDummyDataService,
+    private cd: ChangeDetectorRef,
+    private filterService: TableFiltersServiceService,
+  ) {}
 
   ngOnInit(): void {
     this.subscribeStudents();
@@ -46,21 +53,20 @@ export class DataViewComponent implements OnInit {
   subscribeStudents(): void {
     this.studentsDataService.getStudents().subscribe(students => {
       this.dataSource.data = students;
-
-    })
+    });
   }
-
 
   setStudents(students: IStudentElementModel[]): void {
     this.dataSource.data = students;
     this.cd.detectChanges();
-    this.dataTableComponent.detectChanges()
+    this.dataTableComponent.detectChanges();
   }
 
-
   removeStudent(student: IStudentElementModel): void {
-    this.studentsDataService.deleteStudent(student).pipe(take(1)).subscribe(updatedStudents=>
-    this.dataSource.data = updatedStudents)
+    this.studentsDataService
+      .deleteStudent(student)
+      .pipe(take(1))
+      .subscribe(updatedStudents => (this.dataSource.data = updatedStudents));
   }
 
   openDetailsCard(student?: IStudentElementModel): void {
@@ -70,13 +76,14 @@ export class DataViewComponent implements OnInit {
     setTimeout(() => {
       this.chosenStudent = student ? student : null;
       this.isDetailsCardOpen = true;
-    }, 100)
-
+    }, 100);
   }
 
-  applyFilter (filter :string){
-    this.studentsDataService.getStudents(filter).pipe(take(1)).subscribe(updatedStudents=>
-      this.dataSource.data = updatedStudents)
+  applyFilter(filter: string) {
+    this.studentsDataService
+      .getStudents(filter)
+      .pipe(take(1))
+      .subscribe(updatedStudents => (this.dataSource.data = updatedStudents));
   }
 
   closeDetailsCard(): void {

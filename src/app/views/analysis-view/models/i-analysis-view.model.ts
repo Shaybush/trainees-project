@@ -1,4 +1,4 @@
-import {FormControl} from "@angular/forms";
+import { FormControl } from '@angular/forms';
 
 export interface IAnalysisFilterOptionsModel {
   ids: number[];
@@ -12,7 +12,7 @@ export interface IAnalysisFormModel {
 
 export interface IAnalysisChartDataModel {
   label: string;
-  value: number
+  value: number;
 }
 
 export interface IChartsInfoModel {
@@ -24,23 +24,22 @@ export interface IChartsInfoModel {
 export interface IFilterOverTimeValueModel {
   name: string;
   totalGrades: number;
-  exams: number
+  exams: number;
 }
 
 export interface IChartDataValuesModel {
   value: number;
-  itemStyle:
-    {
-      color: string
-    }
+  itemStyle: {
+    color: string;
+  };
 }
 
 export interface IAnalysisChartLineStudentExamsWithIdModel {
   id: string;
-  exams: IAnalysisChartLineStudentExams[]
+  exams: IAnalysisChartLineStudentExams[];
 }
 
 export interface IAnalysisChartLineStudentExams {
-  date: `${number}-${number}-${number}`,
-  grade: number
+  date: `${number}-${number}-${number}`;
+  grade: number;
 }

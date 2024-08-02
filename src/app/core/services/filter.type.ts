@@ -9,7 +9,8 @@ export interface JsonArray extends Array<JsonValue> {}
 export interface JsonObject {
   [key: string]: JsonValue;
 }
-export type JsonType = JsonValue;export type FilterObject<T = any> = {
+export type JsonType = JsonValue;
+export type FilterObject<T = any> = {
   [P in keyof T]?: FilterInsideObject<T[P]>;
 };
 

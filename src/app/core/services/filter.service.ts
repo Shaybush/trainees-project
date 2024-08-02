@@ -4,7 +4,8 @@ import {
   FilterInsideObject,
   MatchMode,
   FilterObject,
-  FilterDataResponse, JsonPrimitive,
+  FilterDataResponse,
+  JsonPrimitive,
 } from './filter.type';
 
 @Injectable({
@@ -68,7 +69,7 @@ export class TableFiltersServiceService {
             return i?.[k] >= filterObj.value;
             break;
           }
-          if (typeof filterObj.value == "string") {
+          if (typeof filterObj.value == 'string') {
             // @ts-ignore
             return i?.[k] >= filterObj.value;
             break;
@@ -82,10 +83,10 @@ export class TableFiltersServiceService {
           const typeofFilterValue = typeof filterObj.value;
           if (['number', 'string', 'object']?.includes(typeofFilterValue)) {
             const itemDate = new Date(
-              i?.[k] as any as number | string | Date
+              i?.[k] as any as number | string | Date,
             ).getTime();
             const filterDate = new Date(
-              filterObj.value as any as string | number | Date
+              filterObj.value as any as string | number | Date,
             ).getTime();
             switch (filterObj.matchMode) {
               case MatchMode.Before: {
@@ -159,7 +160,7 @@ export class TableFiltersServiceService {
               if (Array.isArray(filterValue)) {
                 const itemValueAsJson = JSON.stringify(itemValue);
                 return filterValue?.some(
-                  (i) => JSON.stringify(i) === itemValueAsJson
+                  i => JSON.stringify(i) === itemValueAsJson,
                 );
               }
               // else if (filterValue !== null){
@@ -193,20 +194,20 @@ export class TableFiltersServiceService {
 
   public filter = <T>(
     items: T[],
-    evt: LazyLoadEvent<T>
+    evt: LazyLoadEvent<T>,
   ): FilterDataResponse<T> => {
     const filteredItems = items?.filter(
-      (i) =>
-        !evt?.filters?.some((f) =>
+      i =>
+        !evt?.filters?.some(f =>
           (Object.keys(f) as (keyof typeof f)[])?.some(
-            (k) => !TableFiltersServiceService.filterByMatchMode<T>(i, f, k)
-          )
-        )
+            k => !TableFiltersServiceService.filterByMatchMode<T>(i, f, k),
+          ),
+        ),
     );
     return {
       data: filteredItems?.slice(
         evt.pageNum * evt.pageSize,
-        (evt.pageNum + 1) * evt.pageSize
+        (evt.pageNum + 1) * evt.pageSize,
       ),
       totalRecords: filteredItems?.length,
     };

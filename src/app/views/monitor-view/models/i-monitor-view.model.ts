@@ -1,4 +1,4 @@
-import {FormControl} from "@angular/forms";
+import { FormControl } from '@angular/forms';
 
 export interface IMonitorFormModel {
   ids: FormControl<number[]>;
@@ -18,12 +18,12 @@ export interface IMonitorTableDataModel {
   id: string;
   name: string;
   average: number;
-  exams: number
+  exams: number;
 }
 
 export interface IAggregateStudentGradesModel {
   id: string;
   name: string;
   totalGrades: number;
-  exams: number
+  exams: number;
 }

@@ -1,4 +1,4 @@
-.data-table-wrapper{
+.data-table-wrapper {
   .demo-table {
     width: 100%;
   }
@@ -10,7 +10,7 @@
   }
 
   .edit-icon:hover {
-    color: #0000FF;
+    color: #0000ff;
     transition: 300ms ease-in-out;
     cursor: pointer;
   }

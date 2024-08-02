@@ -1,7 +1,10 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { EChartsOption } from 'echarts';
-import {IAnalysisChartDataModel, IChartDataValuesModel} from "../../models/i-analysis-view.model";
-import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
+import {
+  IAnalysisChartDataModel,
+  IChartDataValuesModel,
+} from '../../models/i-analysis-view.model';
+import { NgxEchartsDirective, provideEcharts } from 'ngx-echarts';
 
 @Component({
   selector: 'app-analysis-chart-bar',
@@ -9,30 +12,29 @@ import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
   imports: [NgxEchartsDirective],
   providers: [provideEcharts()],
   templateUrl: './analysis-chart-bar.component.html',
-  styleUrl: './analysis-chart-bar.component.css'
+  styleUrl: './analysis-chart-bar.component.css',
 })
-
 export class AnalysisChartBarComponent implements OnInit {
   @Input({ required: true }) chartData: IAnalysisChartDataModel[];
   @Input()
   set hideData(value: boolean) {
     this.isLoading = true;
     // todo - improve later
-    setTimeout(()=>{
+    setTimeout(() => {
       this.isLoading = false;
-      this._hideData = value
-    })
+      this._hideData = value;
+    });
   }
   get hideData(): boolean {
     return this._hideData;
   }
 
-  isLoading?: boolean
-  private  _hideData: boolean;
+  isLoading?: boolean;
+  private _hideData: boolean;
   chartOption: EChartsOption;
 
   ngOnInit(): void {
-      this.initChartOptions();
+    this.initChartOptions();
   }
 
   private initChartOptions(): void {
@@ -57,13 +59,13 @@ export class AnalysisChartBarComponent implements OnInit {
     return this.chartData.map(data => ({
       value: data.value,
       itemStyle: {
-        color: this.getRandomColor()
-      }
-    }))
+        color: this.getRandomColor(),
+      },
+    }));
   }
 
   private getRandomColor(): string {
-    const hexCode = Math.floor(Math.random() * 0xFFFFFF).toString(16);
-    return "#" + hexCode.padStart(6, '0');
+    const hexCode = Math.floor(Math.random() * 0xffffff).toString(16);
+    return '#' + hexCode.padStart(6, '0');
   }
 }

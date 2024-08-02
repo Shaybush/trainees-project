@@ -1,5 +1,5 @@
 .data-details-card-wrapper {
-  .data-details-card-header{
+  .data-details-card-header {
     position: relative;
     & > h2 {
       text-align: center;
