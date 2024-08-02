@@ -78,7 +78,7 @@
               <mat-label>Address</mat-label>
               <input matInput id="detail_address" type="string" [formControl]="dataDetailsForm.controls.address">
 
-              @if (dataDetailsForm.controls.date.hasError('required')) {
+              @if (dataDetailsForm.controls.address.hasError('required')) {
                 <mat-error>Address is <strong>required</strong></mat-error>
               }
             </mat-form-field>

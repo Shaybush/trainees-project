@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -62,10 +61,6 @@ export class DataTableComponent implements AfterViewInit {
   @Input({ required: true }) dataSource: MatTableDataSource<IStudentElementModel>;
   @Input({ required: true }) displayedColumns: string[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  // todo - check if need to delete
-  constructor(private cd: ChangeDetectorRef) {}
-  detectChanges = this.cd.detectChanges;
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;

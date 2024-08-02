@@ -1,8 +1,6 @@
 import {
-  ChangeDetectorRef,
   Component,
   OnInit,
-  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
@@ -14,8 +12,6 @@ import { DataTableComponent } from './components/data-table/data-table.component
 import { MatTableDataSource } from '@angular/material/table';
 import { displayedColumnsConfig } from './config/data-table.config';
 import { take } from 'rxjs';
-import { TableFiltersServiceService } from '../../core/services/filter.service';
-import { MatchMode } from '../../core/services/filter.type';
 
 @Component({
   selector: 'app-data-view',
@@ -34,16 +30,11 @@ import { MatchMode } from '../../core/services/filter.type';
 export class DataViewComponent implements OnInit {
   isDetailsCardOpen: boolean = false;
   displayedColumns: string[] = displayedColumnsConfig;
-  dataSource: MatTableDataSource<IStudentElementModel> =
-    new MatTableDataSource<IStudentElementModel>();
+  dataSource: MatTableDataSource<IStudentElementModel> = new MatTableDataSource<IStudentElementModel>();
   chosenStudent: IStudentElementModel | null = null;
-  // todo - check remove
-  @ViewChild(DataTableComponent) dataTableComponent!: DataTableComponent;
 
   constructor(
     private studentsDataService: StudentsHttpDummyDataService,
-    private cd: ChangeDetectorRef,
-    private filterService: TableFiltersServiceService,
   ) {}
 
   ngOnInit(): void {
@@ -58,8 +49,6 @@ export class DataViewComponent implements OnInit {
 
   setStudents(students: IStudentElementModel[]): void {
     this.dataSource.data = students;
-    this.cd.detectChanges();
-    this.dataTableComponent.detectChanges();
   }
 
   removeStudent(student: IStudentElementModel): void {
