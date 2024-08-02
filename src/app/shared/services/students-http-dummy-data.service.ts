@@ -15,6 +15,7 @@ export class StudentsHttpDummyDataService {
   }
   private InitialStudents: IStudentElementModel[] = LocalStorageUtilsService.getSessionValueAsObject(ELocalKey.students_ar) as IStudentElementModel[] || StudentsDummyData
   private  currentStudents: IStudentElementModel[] = this.InitialStudents;
+
   /* search query start */
   public getStudents(filter ?: string): Observable<IStudentElementModel[]> {
     if (!filter){
@@ -25,11 +26,11 @@ export class StudentsHttpDummyDataService {
     this.currentStudents =  this.filterService.filter<IStudentElementModel>(this.InitialStudents, {
       filters: [{
         [filed?.toLowerCase()]:{
-          matchMode: isGraterOrLess ? valueWithOperator?.trim()?.at(0) === '>' ? MatchMode.GreaterThan :MatchMode.LessThan : MatchMode.StartsWith,
+          matchMode: isGraterOrLess ? valueWithOperator?.trim()?.at(0) === '>' ? MatchMode.GreaterThan : MatchMode.LessThan : MatchMode.StartsWith,
           value: isGraterOrLess ?valueWithOperator?.trim()?.slice(1) : valueWithOperator?.trim(),
-
         }
       }]
+      // default pagination front filters and not server filters
       ,pageNum:0,
       pageSize:Number.MAX_VALUE,
     }).data
@@ -42,7 +43,6 @@ export class StudentsHttpDummyDataService {
 
   putStudent (student: Partial <IStudentElementModel>):  Observable<IStudentElementModel[]> {
     const userToEdit = this.currentStudents.findIndex(i=> i.id === student.id)
-    // TODO spread by reduce js array function
     Object.keys(student).reduce((acc, key) => {
       if (this.currentStudents[userToEdit].hasOwnProperty(key)) {
         this.currentStudents[userToEdit][key]  = student[key]

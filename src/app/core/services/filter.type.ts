@@ -10,8 +10,6 @@ export interface JsonObject {
   [key: string]: JsonValue;
 }
 export type JsonType = JsonValue;export type FilterObject<T = any> = {
-
-
   [P in keyof T]?: FilterInsideObject<T[P]>;
 };
 
@@ -29,7 +27,6 @@ export interface FilterDataResponse<T = any> {
 export interface FilterInsideObject<V = any> {
   value?: V;
   matchMode?: MatchMode;
-  // innerFilter?: FilterObject<V>
 }
 
 export enum MatchMode {
@@ -58,29 +55,3 @@ export enum MatchMode {
   /** @property {NotAny} any falsy value */
   NotAny = 2502,
 }
-
-enum MoreMatchMode {
-  /** @property {Regex} any value that match {value} regex */ Regex = 'Regex',
-}
-
-export const FiledValidationsMatchMode = { ...MatchMode, ...MoreMatchMode };
-// FiledValidationsMatchMode.Regex;
-
-// const t: LazyLoadEvent<{ username: string; id: number }> = {
-//   page: 0,
-//   pageSize: 10,
-//   filters: [
-//     {
-//       username: {
-//         value: 'mor ba',
-//         matchMode: MatchMode.Contains,
-//       },
-//     },
-//     // {
-//     //   id: {
-//     //     value: 2,
-//     //     matchMode: MatchMode.NotEquals,
-//     //   },
-//     // },
-//   ],
-// };

@@ -16,6 +16,7 @@ export interface IAnalysisChartDataModel {
 }
 
 export interface IChartsInfoModel {
+  id: number;
   name: string;
   data: IAnalysisChartDataModel[];
 }
@@ -32,4 +33,14 @@ export interface IChartDataValuesModel {
     {
       color: string
     }
+}
+
+export interface IAnalysisChartLineStudentExamsWithIdModel {
+  id: string;
+  exams: IAnalysisChartLineStudentExams[]
+}
+
+export interface IAnalysisChartLineStudentExams {
+  date: `${number}-${number}-${number}`,
+  grade: number
 }

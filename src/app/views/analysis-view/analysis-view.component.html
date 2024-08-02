@@ -9,9 +9,13 @@
         @for (chart of chartsInfo; track chart.name; let last=$last) {
           <div class="box" cdkDrag>
             <h2 class="header">{{ chart.name }}</h2>
-            <div class="context"
-            >
-              <app-analysis-chart-over-time [hideData]="last" [chartData]="chart.data" />
+            <div class="context">
+              @if (chart.id === 1){
+                <app-analysis-chart-line [hideData]="last"/>
+              }
+              @else {
+                <app-analysis-chart-bar [hideData]="last" [chartData]="chart.data" />
+              }
             </div>
           </div>
         }

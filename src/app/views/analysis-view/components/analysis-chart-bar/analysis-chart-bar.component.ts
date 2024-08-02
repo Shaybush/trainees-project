@@ -1,17 +1,18 @@
 import { Component, Input, OnInit} from '@angular/core';
 import { EChartsOption } from 'echarts';
 import {IAnalysisChartDataModel, IChartDataValuesModel} from "../../models/i-analysis-view.model";
-import {NgxEchartsDirective} from "ngx-echarts";
+import {NgxEchartsDirective, provideEcharts} from "ngx-echarts";
 
 @Component({
-  selector: 'app-analysis-chart-over-time',
+  selector: 'app-analysis-chart-bar',
   standalone: true,
   imports: [NgxEchartsDirective],
-  templateUrl: './analysis-chart.component.html',
-  styleUrl: './analysis-chart.component.css'
+  providers: [provideEcharts()],
+  templateUrl: './analysis-chart-bar.component.html',
+  styleUrl: './analysis-chart-bar.component.css'
 })
 
-export class AnalysisChartComponent implements OnInit {
+export class AnalysisChartBarComponent implements OnInit {
   @Input({ required: true }) chartData: IAnalysisChartDataModel[];
   @Input()
   set hideData(value: boolean) {

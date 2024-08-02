@@ -5,12 +5,13 @@ import {IAnalysisChartDataModel, IAnalysisFilterOptionsModel, IChartsInfoModel} 
 import {IStudentElementModel} from "../../shared/models/i-student-data.model";
 import {StudentsHttpDummyDataService} from "../../shared/services/students-http-dummy-data.service";
 import {CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray} from '@angular/cdk/drag-drop';
-import {AnalysisChartComponent} from "./components/analysis-chart/analysis-chart.component";
+import {AnalysisChartBarComponent} from "./components/analysis-chart-bar/analysis-chart-bar.component";
 import {
   filterOverTimeChartData,
   filterPerSubjectChartData,
-  filterStudentAvgChartData
+  filterStudentAvgByIdChartData
 } from "./filters/analysis-chart-filters";
+import {AnalysisChartLineComponent} from "./components/analysis-chart-line/analysis-chart-line.component";
 
 @Component({
   selector: 'app-analysis-view',
@@ -21,7 +22,8 @@ import {
     AnalysisFormHeaderComponent,
     CdkDropList,
     CdkDrag,
-    AnalysisChartComponent
+    AnalysisChartBarComponent,
+    AnalysisChartLineComponent
   ],
   templateUrl: './analysis-view.component.html',
   styleUrl: './analysis-view.component.css'
@@ -31,7 +33,7 @@ export class AnalysisViewComponent implements OnInit {
 
   overTimeChartData: IAnalysisChartDataModel[];
   perSubjectChartData: IAnalysisChartDataModel[];
-  studentAvgChartData: IAnalysisChartDataModel[];
+  studentsAvgByIdChartData: IAnalysisChartDataModel[];
 
   chartsInfo: IChartsInfoModel[];
 
@@ -41,46 +43,43 @@ export class AnalysisViewComponent implements OnInit {
   ngOnInit(): void {
     this.studentsDataService.getStudents().subscribe(students => {
       this.students = students;
+      this.overTimeChartData = filterOverTimeChartData(this.students);
+      this.perSubjectChartData = filterPerSubjectChartData(this.students);
+      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(this.students);
+
+      this.initChartsInfo();
     })
-    this.initChartsData();
   }
 
   drop(event: CdkDragDrop<{ header: string, context: string }[]>): void {
-    console.log(`previousIndex - ${event.previousIndex}, currentIndex - ${event.currentIndex}`)
     moveItemInArray(this.chartsInfo, event.previousIndex, event.currentIndex);
   }
 
-  initChartsData(): void {
-    this.overTimeChartData = filterOverTimeChartData(this.students);
-    this.perSubjectChartData = filterPerSubjectChartData(this.students);
-    this.studentAvgChartData = filterStudentAvgChartData(this.students);
-
-    this.initChartsInfo();
+  setFilterOptions(filterOptions: IAnalysisFilterOptionsModel): void {
+    if (this.students){
+      this.overTimeChartData = filterOverTimeChartData(this.students, filterOptions);
+      this.perSubjectChartData = filterPerSubjectChartData(this.students, filterOptions);
+      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(this.students, filterOptions);
+    }
   }
 
   initChartsInfo(): void {
     this.chartsInfo = [
       {
+        id: 1,
         name: "Chart 1 - All Student's Averages",
-        data: [this.overTimeChartData?.at(0)],
+        data: this.overTimeChartData,
       },
       {
+        id: 2,
         name: "Chart 2 - Selected IDs Student Average",
-        data: [this.overTimeChartData?.at(2)],
+        data: this.studentsAvgByIdChartData,
       },
       {
+        id: 3,
         name: "Chart 3 - Selected Subject Grades Average",
-        data: [this.overTimeChartData?.at(1)],
+        data: this.perSubjectChartData,
       }
     ]
   }
-
-  setFilterOptions(filterOptions: IAnalysisFilterOptionsModel): void {
-    console.log(filterOptions)
-    // this.perSubjectChartData = filterPerSubjectChartData(this.students, filterOptions);
-    // this.studentAvgChartData = filterStudentAvgChartData(this.students, filterOptions);
-  }
-
-
-
 }

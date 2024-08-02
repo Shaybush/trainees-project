@@ -1,19 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnalysisChartComponent } from './analysis-chart.component';
+import { AnalysisChartBarComponent } from './analysis-chart-bar.component';
 
 describe('AnalysisChartOverTimeComponent', () => {
-  let component: AnalysisChartComponent;
-  let fixture: ComponentFixture<AnalysisChartComponent>;
+  let component: AnalysisChartBarComponent;
+  let fixture: ComponentFixture<AnalysisChartBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AnalysisChartComponent]
+      imports: [AnalysisChartBarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AnalysisChartComponent);
+    fixture = TestBed.createComponent(AnalysisChartBarComponent);
     component = fixture.componentInstance;
+    component.chartData = []
+
     fixture.detectChanges();
   });
 
