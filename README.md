@@ -25,3 +25,10 @@ Project Pages: Data, Analysis, Monitor.
 5. Open the URL below and you ready to go
     ```sh
      http://localhost:4200
+
+  ### Project Images -
+  ![Screenshot 2024-08-02 at 13 37 09](https://github.com/user-attachments/assets/3e678a92-f1ee-4082-b215-28d8a93dfe5c)
+  ![Screenshot 2024-08-02 at 13 35 16](https://github.com/user-attachments/assets/072f3751-f0fe-4cc2-a3d6-4516aab1cedf)
+  ![Screenshot 2024-08-02 at 13 36 06](https://github.com/user-attachments/assets/08be9fe3-4293-4ab4-b547-8ea9f1bab7cc)
+
+
