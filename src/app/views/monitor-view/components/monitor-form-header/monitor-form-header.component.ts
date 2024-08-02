@@ -55,7 +55,7 @@ export class MonitorFormHeaderComponent implements OnInit {
       isFailed: new FormControl<boolean>(true),
       isPassed: new FormControl<boolean>(true),
     })
-    const filters = this.filtersService.monitorFilters;
+    const filters = this.filtersService.getMonitorFilters();
     if(filters) this.updateMonitorForm(filters);
   }
 

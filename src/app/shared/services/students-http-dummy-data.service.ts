@@ -4,23 +4,36 @@ import {IStudentElementModel} from "../models/i-student-data.model";
 import {StudentsDummyData} from "../../core/config/student-dummy-data.config";
 import {LocalStorageUtilsService} from "./util/local-storage-utils.service";
 import {ELocalKey} from "../enums/e-local-key.enum";
+import {MatchMode} from "../../core/services/filter.type";
+import {TableFiltersServiceService} from "../../core/services/filter.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentsHttpDummyDataService {
+  constructor(private  filterService:TableFiltersServiceService) {
+  }
   private InitialStudents: IStudentElementModel[] = LocalStorageUtilsService.getSessionValueAsObject(ELocalKey.students_ar) as IStudentElementModel[] || StudentsDummyData
   private  currentStudents: IStudentElementModel[] = this.InitialStudents;
   /* search query start */
-  public getStudents(filters ?: any): Observable<IStudentElementModel[]> {
+  public getStudents(filter ?: string): Observable<IStudentElementModel[]> {
+    if (!filter){
+      return  of(this.InitialStudents)
+    }
+    const [filed , valueWithOperator]   = filter?.trim()?.split(':')
+    const isGraterOrLess =  ['>','<']?.includes(valueWithOperator?.trim()?.at(0))
+    this.currentStudents =  this.filterService.filter<IStudentElementModel>(this.InitialStudents, {
+      filters: [{
+        [filed?.toLowerCase()]:{
+          matchMode: isGraterOrLess ? valueWithOperator?.trim()?.at(0) === '>' ? MatchMode.GreaterThan :MatchMode.LessThan : MatchMode.StartsWith,
+          value: isGraterOrLess ?valueWithOperator?.trim()?.slice(1) : valueWithOperator?.trim(),
 
-    // const filteredStudents = all_students.map((student: IStudentElementModel) => {
-    //   if(student.id === edited_data.id) return {...edited_data, date_joined: DateUtilsService.dateToUnixTime(edited_data.date_joined as string)};
-    //   return student;
-    // })
-
-    return !filters ? of (this.currentStudents): null ;
-    // TODO: apply filter here
+        }
+      }]
+      ,pageNum:0,
+      pageSize:Number.MAX_VALUE,
+    }).data
+    return  of(this.currentStudents);
   }
 
   private updateStudentsCollection(students: IStudentElementModel[]): void {

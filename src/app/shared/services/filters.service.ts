@@ -5,8 +5,9 @@ import {IAnalysisFiltersModel, IMonitorFiltersModel} from "../models/i-filter.mo
   providedIn: 'root'
 })
 export class FiltersService {
-  analysisFilters: Partial<IAnalysisFiltersModel>;
-  monitorFilters: Partial<IMonitorFiltersModel>;
+  private analysisFilters: Partial<IAnalysisFiltersModel>;
+  private monitorFilters: Partial<IMonitorFiltersModel>;
+  dataSearchFilter: string;
 
   setAnalysisFilters(analysisFilters: Partial<IAnalysisFiltersModel>): void{
     this.analysisFilters = analysisFilters;
@@ -22,5 +23,13 @@ export class FiltersService {
 
   getMonitorFilters(): Partial<IMonitorFiltersModel>{
     return this.monitorFilters
+  }
+
+  setDataSearchFilter(filter: string): void {
+    this.dataSearchFilter = filter;
+  }
+
+  getDataSearchFilter(): string {
+    return this.dataSearchFilter;
   }
 }

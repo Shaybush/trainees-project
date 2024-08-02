@@ -49,7 +49,7 @@ export class AnalysisFormHeaderComponent implements OnInit {
       subjects: new FormControl<string[]>([]),
     })
 
-    const filters = this.filtersService.analysisFilters;
+    const filters = this.filtersService.getAnalysisFilters();
     if(filters) this.updateAnalysisForm(filters);
   }
 

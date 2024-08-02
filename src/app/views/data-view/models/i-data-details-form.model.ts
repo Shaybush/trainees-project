@@ -1,14 +1,19 @@
 import {FormControl} from "@angular/forms";
+import {IStudentElementModel} from "../../../shared/models/i-student-data.model";
 
 export interface IDataDetailsFormModel {
-  id: FormControl<number | null>;
-  name: FormControl<string>;
-  grade: FormControl<number>;
-  subject: FormControl<string>;
-  email: FormControl<string>;
-  date_joined: FormControl<Date | number | string>;
-  address: FormControl<string>;
-  city: FormControl<string>;
-  country: FormControl<string>;
-  zip: FormControl<number | null>;
+  id: FormControl<IStudentElementModel['id']>;
+  name: FormControl<IStudentElementModel['name']>;
+  grade: FormControl<IStudentElementModel['grade']>;
+  subject: FormControl<IStudentElementModel['subject']>;
+  email: FormControl<IStudentElementModel['email']>;
+  date: FormControl<IStudentElementModel['date']>;
+  address: FormControl<IStudentElementModel['address']>;
+  city: FormControl<IStudentElementModel['city']>;
+  country: FormControl<IStudentElementModel['country']>;
+  zip: FormControl<IStudentElementModel['zip']>;
+}
+
+export interface IDataHeaderFormModel {
+  search: FormControl<string>;
 }

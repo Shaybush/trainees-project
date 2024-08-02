@@ -57,12 +57,12 @@
             <!-- date -->
             <mat-form-field class="data-details-input">
               <mat-label>Date</mat-label>
-              <input matInput id="detail_date" type="date" [formControl]="dataDetailsForm.controls.date_joined">
+              <input matInput id="detail_date" type="date" [formControl]="dataDetailsForm.controls.date">
 
-              @if (dataDetailsForm.controls.date_joined.hasError('pattern') && !dataDetailsForm.controls.date_joined.hasError('required')) {
+              @if (dataDetailsForm.controls.date.hasError('pattern') && !dataDetailsForm.controls.date.hasError('required')) {
                 <mat-error>Please enter a valid date</mat-error>
               }
-              @if (dataDetailsForm.controls.date_joined.hasError('required')) {
+              @if (dataDetailsForm.controls.date.hasError('required')) {
                 <mat-error>Date is <strong>required</strong></mat-error>
               }
             </mat-form-field>
@@ -74,7 +74,7 @@
               <mat-label>Address</mat-label>
               <input matInput id="detail_address" type="string" [formControl]="dataDetailsForm.controls.address">
 
-              @if (dataDetailsForm.controls.date_joined.hasError('required')) {
+              @if (dataDetailsForm.controls.date.hasError('required')) {
                 <mat-error>Address is <strong>required</strong></mat-error>
               }
             </mat-form-field>

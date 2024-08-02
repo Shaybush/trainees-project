@@ -46,30 +46,27 @@ export class DataDetailsCardComponent implements OnInit {
 
   initDataDetailsForm(): void {
     this.dataDetailsForm = new FormGroup({
-      id: new FormControl<number>({ value: null, disabled: true }),
-      name: new FormControl<string>('', [Validators.required]),
+      id: new FormControl<IStudentElementModel['id']>({ value: null, disabled: true }),
+      name: new FormControl<IStudentElementModel['name']>('', [Validators.required]),
       // todo - check if year is valid not bigger then current date
-      date_joined: new FormControl<Date | number | string>('', [Validators.required, Validators.pattern(this.datePattern)]),
-      city: new FormControl<string>('', [Validators.required]),
-      address: new FormControl<string>('', [Validators.required]),
-      grade: new FormControl<number>(0, [Validators.required, Validators.min(0), Validators.max(100)]),
-      email: new FormControl<string>('', [Validators.required, Validators.email]),
-      country: new FormControl<string>('', [Validators.required]),
-      zip: new FormControl<number>(null, [Validators.required]),
-      subject: new FormControl<string>('', [Validators.required]),
+      date: new FormControl<IStudentElementModel['date']>(null, [Validators.required, Validators.pattern(this.datePattern)]),
+      city: new FormControl<IStudentElementModel['city']>('', [Validators.required]),
+      address: new FormControl<IStudentElementModel['address']>('', [Validators.required]),
+      grade: new FormControl<IStudentElementModel['grade']>(0, [Validators.required, Validators.min(0), Validators.max(100)]),
+      email: new FormControl<IStudentElementModel['email']>('', [Validators.required, Validators.email]),
+      country: new FormControl<IStudentElementModel['country']>('', [Validators.required]),
+      zip: new FormControl<IStudentElementModel['zip']>(null, [Validators.required]),
+      subject: new FormControl<IStudentElementModel['subject']>('', [Validators.required])
     });
 
     if(this.chosenStudent) this.updateDataDetailsForm()
   }
 
   updateDataDetailsForm(): void {
-
-
-    const date_string = DateUtilsService.dateToString(new Date(this.chosenStudent.date_joined));
     this.dataDetailsForm.patchValue({
       id: this.chosenStudent.id,
       name: this.chosenStudent.name,
-      date_joined: date_string,
+      date: this.chosenStudent.date,
       city: this.chosenStudent.city,
       address: this.chosenStudent.address,
       grade: this.chosenStudent.grade,

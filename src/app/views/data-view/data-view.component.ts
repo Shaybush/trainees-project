@@ -8,6 +8,8 @@ import {DataTableComponent} from "./components/data-table/data-table.component";
 import {MatTableDataSource} from "@angular/material/table";
 import {displayedColumnsConfig} from "./config/data-table.config";
 import {take} from "rxjs";
+import {TableFiltersServiceService} from "../../core/services/filter.service";
+import {MatchMode} from "../../core/services/filter.type";
 
 @Component({
   selector: 'app-data-view',
@@ -32,9 +34,9 @@ export class DataViewComponent implements OnInit {
   @ViewChild(DataTableComponent) dataTableComponent!: DataTableComponent;
 
 
-
-
-  constructor(private studentsDataService: StudentsHttpDummyDataService,private  cd :  ChangeDetectorRef) {
+  constructor(private studentsDataService: StudentsHttpDummyDataService,private  cd :  ChangeDetectorRef,
+              private  filterService : TableFiltersServiceService
+              ) {
   }
 
   ngOnInit(): void {
@@ -70,6 +72,11 @@ export class DataViewComponent implements OnInit {
       this.isDetailsCardOpen = true;
     }, 100)
 
+  }
+
+  applyFilter (filter :string){
+    this.studentsDataService.getStudents(filter).pipe(take(1)).subscribe(updatedStudents=>
+      this.dataSource.data = updatedStudents)
   }
 
   closeDetailsCard(): void {
