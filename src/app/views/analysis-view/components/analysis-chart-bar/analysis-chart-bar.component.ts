@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { EChartsOption } from 'echarts';
 import {
   IAnalysisChartDataModel,
@@ -14,8 +14,12 @@ import { NgxEchartsDirective, provideEcharts } from 'ngx-echarts';
   templateUrl: './analysis-chart-bar.component.html',
   styleUrl: './analysis-chart-bar.component.css',
 })
-export class AnalysisChartBarComponent implements OnInit {
-  @Input({ required: true }) chartData: IAnalysisChartDataModel[];
+export class AnalysisChartBarComponent {
+  @Input({ required: true })
+  set chartData(value: IAnalysisChartDataModel[]) {
+    this.initChartOptions(value);
+  }
+
   @Input()
   set hideData(value: boolean) {
     this.isLoading = true;
@@ -33,30 +37,26 @@ export class AnalysisChartBarComponent implements OnInit {
   private _hideData: boolean;
   chartOption: EChartsOption;
 
-  ngOnInit(): void {
-    this.initChartOptions();
-  }
-
-  private initChartOptions(): void {
+  private initChartOptions(chartData: IAnalysisChartDataModel[]): void {
     this.chartOption = {
       xAxis: {
         type: 'category',
-        data: this.chartData.map(data => data.label),
+        data: chartData.map((data) => data.label),
       },
       yAxis: {
         type: 'value',
       },
       series: [
         {
-          data: this.mapChartValues(),
+          data: this.mapChartValues(chartData),
           type: 'bar',
         },
       ],
     };
   }
 
-  private mapChartValues(): IChartDataValuesModel[] {
-    return this.chartData.map(data => ({
+  private mapChartValues(chartData: IAnalysisChartDataModel[]): IChartDataValuesModel[] {
+    return chartData?.map((data) => ({
       value: data.value,
       itemStyle: {
         color: this.getRandomColor(),

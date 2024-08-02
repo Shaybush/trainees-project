@@ -4,23 +4,21 @@ import {
 } from '../models/i-analysis-view.model';
 import { IStudentElementModel } from '../../../shared/models/i-student-data.model';
 
+// todo - [spike] check if can be implement with filter service
 /**
  * filter over the time means all the users with their avg grades
  * */
-export function filterOverTimeChartData(
-  students: IStudentElementModel[],
-  filterOptions?: IAnalysisFilterOptionsModel,
-): IAnalysisChartDataModel[] {
-  return [{ label: '', value: 15 }];
-}
+// export function filterOverTimeChartData(
+//   students: IStudentElementModel[],
+//   filterOptions?: IAnalysisFilterOptionsModel,
+// ): IAnalysisChartDataModel[] {
+//   return [{ label: '', value: 15 }];
+// }
 
 /**
  * filter per subject means all the chosen subject and the average in each subject
  * */
-export function filterPerSubjectChartData(
-  students: IStudentElementModel[],
-  filterOptions?: IAnalysisFilterOptionsModel,
-): IAnalysisChartDataModel[] {
+export function filterPerSubjectChartData(students: IStudentElementModel[], filterOptions?: IAnalysisFilterOptionsModel): IAnalysisChartDataModel[] {
   let subjects: string[] | null = null;
 
   if (filterOptions && filterOptions.subjects?.length) {
@@ -40,9 +38,7 @@ export function filterPerSubjectChartData(
       }
       return acc;
     },
-    {} as Record<
-      string,
-      { subject: string; totalGrades: number; exams: number }
+    {} as Record<string, { subject: string; totalGrades: number; exams: number }
     >,
   );
 
@@ -59,14 +55,23 @@ export function filterStudentAvgByIdChartData(
   students: IStudentElementModel[],
   filterOptions?: IAnalysisFilterOptionsModel,
 ): IAnalysisChartDataModel[] {
+  let ids: number[] | null = null;
+
+  if (filterOptions && filterOptions.ids?.length) {
+    ids = filterOptions.ids.map(id => id);
+  }
+
   const result = students.reduce(
     (acc, student) => {
-      const { name, grade } = student;
+      const { name, grade, id } = student;
       const key = name.toLowerCase();
-      if (!acc[key]) acc[key] = { name, totalGrades: 0, exams: 0 };
+      if (!ids || (ids && ids.includes(id))) {
+        if (!acc[key]) acc[key] = { name, totalGrades: 0, exams: 0 };
 
-      acc[key].totalGrades += grade;
-      acc[key].exams += 1;
+        acc[key].totalGrades += grade;
+        acc[key].exams += 1;
+      }
+
       return acc;
     },
     {} as Record<string, { name: string; totalGrades: number; exams: number }>,

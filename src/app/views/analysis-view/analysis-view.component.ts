@@ -16,7 +16,6 @@ import {
 } from '@angular/cdk/drag-drop';
 import { AnalysisChartBarComponent } from './components/analysis-chart-bar/analysis-chart-bar.component';
 import {
-  filterOverTimeChartData,
   filterPerSubjectChartData,
   filterStudentAvgByIdChartData,
 } from './filters/analysis-chart-filters';
@@ -40,7 +39,6 @@ import { AnalysisChartLineComponent } from './components/analysis-chart-line/ana
 export class AnalysisViewComponent implements OnInit {
   students: IStudentElementModel[];
 
-  overTimeChartData: IAnalysisChartDataModel[];
   perSubjectChartData: IAnalysisChartDataModel[];
   studentsAvgByIdChartData: IAnalysisChartDataModel[];
 
@@ -51,11 +49,10 @@ export class AnalysisViewComponent implements OnInit {
   ngOnInit(): void {
     this.studentsDataService.getStudents().subscribe(students => {
       this.students = students;
-      this.overTimeChartData = filterOverTimeChartData(this.students);
+
+      // todo - improve
       this.perSubjectChartData = filterPerSubjectChartData(this.students);
-      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(
-        this.students,
-      );
+      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(this.students);
 
       this.initChartsInfo();
     });
@@ -67,18 +64,18 @@ export class AnalysisViewComponent implements OnInit {
 
   setFilterOptions(filterOptions: IAnalysisFilterOptionsModel): void {
     if (this.students) {
-      this.overTimeChartData = filterOverTimeChartData(
-        this.students,
-        filterOptions,
-      );
-      this.perSubjectChartData = filterPerSubjectChartData(
-        this.students,
-        filterOptions,
-      );
-      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(
-        this.students,
-        filterOptions,
-      );
+      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(this.students, filterOptions);
+      this.perSubjectChartData = filterPerSubjectChartData(this.students, filterOptions);
+
+      this.chartsInfo = this.chartsInfo.map(chartItem => {
+        if(chartItem.id === 2){
+          return {...chartItem, data: filterStudentAvgByIdChartData(this.students, filterOptions)}
+        }
+          else if(chartItem.id === 3){
+          return {...chartItem, data: filterPerSubjectChartData(this.students, filterOptions)}
+        }
+          return chartItem;
+      })
     }
   }
 
@@ -87,7 +84,6 @@ export class AnalysisViewComponent implements OnInit {
       {
         id: 1,
         name: "Chart 1 - All Student's Averages",
-        data: this.overTimeChartData,
       },
       {
         id: 2,

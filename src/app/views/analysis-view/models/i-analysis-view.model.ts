@@ -18,7 +18,7 @@ export interface IAnalysisChartDataModel {
 export interface IChartsInfoModel {
   id: number;
   name: string;
-  data: IAnalysisChartDataModel[];
+  data?: IAnalysisChartDataModel[];
 }
 
 export interface IFilterOverTimeValueModel {

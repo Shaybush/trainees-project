@@ -8,7 +8,7 @@ import {
 import { IStudentElementModel } from '../../../../shared/models/i-student-data.model';
 import { StudentsHttpDummyDataService } from '../../../../shared/services/students-http-dummy-data.service';
 import { ArrayUtilsService } from '../../../../shared/services/util/arrays-utils.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import {debounceTime, distinctUntilChanged, startWith} from 'rxjs';
 import { MatButton } from '@angular/material/button';
 import { FiltersService } from '../../../../shared/services/filters.service';
 
@@ -68,7 +68,7 @@ export class AnalysisFormHeaderComponent implements OnInit {
 
   subscribeAnalysisFormChanges(): void {
     this.analysisForm.valueChanges
-      .pipe(debounceTime(500), distinctUntilChanged())
+      .pipe(startWith(this.analysisForm.value) ,debounceTime(500), distinctUntilChanged())
       .subscribe(analysisFilters => {
         this.filtersService.setAnalysisFilters(analysisFilters);
         this.setFilterOptions.emit(
