@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { AnalysisFormHeaderComponent } from './components/analysis-form-header/analysis-form-header.component';
 import {
@@ -20,6 +20,7 @@ import {
   filterStudentAvgByIdChartData,
 } from './filters/analysis-chart-filters';
 import { AnalysisChartLineComponent } from './components/analysis-chart-line/analysis-chart-line.component';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-analysis-view',
@@ -36,7 +37,7 @@ import { AnalysisChartLineComponent } from './components/analysis-chart-line/ana
   templateUrl: './analysis-view.component.html',
   styleUrl: './analysis-view.component.css',
 })
-export class AnalysisViewComponent implements OnInit {
+export class AnalysisViewComponent implements OnInit, OnDestroy {
   students: IStudentElementModel[];
 
   perSubjectChartData: IAnalysisChartDataModel[];
@@ -44,10 +45,13 @@ export class AnalysisViewComponent implements OnInit {
 
   chartsInfo: IChartsInfoModel[];
 
+  // unsubscribe
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
   constructor(private studentsDataService: StudentsHttpDummyDataService) {}
 
   ngOnInit(): void {
-    this.studentsDataService.getStudents().subscribe(students => {
+    this.studentsDataService.getStudents().pipe(takeUntil(this.ngUnsubscribe)).subscribe(students => {
       this.students = students;
 
       // todo - improve
@@ -57,6 +61,12 @@ export class AnalysisViewComponent implements OnInit {
       this.initChartsInfo();
     });
   }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
 
   drop(event: CdkDragDrop<{ header: string; context: string }[]>): void {
     moveItemInArray(this.chartsInfo, event.previousIndex, event.currentIndex);

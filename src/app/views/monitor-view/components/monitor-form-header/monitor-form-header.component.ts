@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import {
@@ -19,8 +19,8 @@ import {
   debounceTime,
   distinctUntilChanged,
   firstValueFrom,
-  startWith,
-  take,
+  startWith, Subject,
+  take, takeUntil,
 } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { FiltersService } from '../../../../shared/services/filters.service';
@@ -42,7 +42,7 @@ import { MatButton } from '@angular/material/button';
   templateUrl: './monitor-form-header.component.html',
   styleUrl: './monitor-form-header.component.css',
 })
-export class MonitorFormHeaderComponent implements OnInit {
+export class MonitorFormHeaderComponent implements OnInit, OnDestroy {
   @Output() setFilterOptions: EventEmitter<IMonitorFilterOptionsModel> =
     new EventEmitter<IMonitorFilterOptionsModel>();
 
@@ -50,6 +50,9 @@ export class MonitorFormHeaderComponent implements OnInit {
   students: IStudentElementModel[];
   idsSelectOptions: number[];
   namesSelectOptions: string[];
+
+  // unsubscribe
+  ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private studentsDataService: StudentsHttpDummyDataService,
@@ -59,16 +62,17 @@ export class MonitorFormHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.initMonitorForm();
     firstValueFrom(
-      this.studentsDataService.getStudents().pipe(
-        take(1),
-        // TODO: takeUntilDestroy
-      ),
-    ).then(x => {
-      this.students = x;
+      this.studentsDataService.getStudents().pipe(take(1))).then(students => {
+      this.students = students;
       this.initIdsSelectOptions();
       this.initNamesSelectOptions();
       this.subscribeMonitorFormChanges();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   initMonitorForm(): void {
@@ -98,6 +102,7 @@ export class MonitorFormHeaderComponent implements OnInit {
   subscribeMonitorFormChanges(): void {
     this.monitorForm.valueChanges
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         startWith(this.monitorForm.value),
         debounceTime(500),
         distinctUntilChanged(),

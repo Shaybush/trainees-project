@@ -35,10 +35,7 @@ export class MonitorViewComponent implements OnInit {
 
   ngOnInit(): void {
     firstValueFrom(
-      this.studentsDataService.getStudents().pipe(
-        take(1),
-        // TODO: takeUntilDestroy
-      ),
+      this.studentsDataService.getStudents().pipe(take(1)),
     ).then(students => {
       this.students = students;
       this.monitorTableData = this.aggregateStudentGrades(students);

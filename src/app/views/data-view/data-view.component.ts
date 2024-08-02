@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
@@ -11,7 +11,7 @@ import { DataHeaderComponent } from './components/data-header/data-header.compon
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { displayedColumnsConfig } from './config/data-table.config';
-import { take } from 'rxjs';
+import {Subject, take, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-data-view',
@@ -27,11 +27,14 @@ import { take } from 'rxjs';
   styleUrl: './data-view.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class DataViewComponent implements OnInit {
+export class DataViewComponent implements OnInit, OnDestroy {
   isDetailsCardOpen: boolean = false;
   displayedColumns: string[] = displayedColumnsConfig;
   dataSource: MatTableDataSource<IStudentElementModel> = new MatTableDataSource<IStudentElementModel>();
   chosenStudent: IStudentElementModel | null = null;
+
+  // unsubscribe
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(
     private studentsDataService: StudentsHttpDummyDataService,
@@ -41,8 +44,13 @@ export class DataViewComponent implements OnInit {
     this.subscribeStudents();
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   subscribeStudents(): void {
-    this.studentsDataService.getStudents().subscribe(students => {
+    this.studentsDataService.getStudents().pipe(takeUntil(this.ngUnsubscribe)).subscribe(students => {
       this.dataSource.data = students;
     });
   }

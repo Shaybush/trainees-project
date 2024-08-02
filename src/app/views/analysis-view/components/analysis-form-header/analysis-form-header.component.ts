@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { FormInputMultiselectComponent } from '../../../../shared/components/form/form-input-multiselect/form-input-multiselect.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -8,7 +8,7 @@ import {
 import { IStudentElementModel } from '../../../../shared/models/i-student-data.model';
 import { StudentsHttpDummyDataService } from '../../../../shared/services/students-http-dummy-data.service';
 import { ArrayUtilsService } from '../../../../shared/services/util/arrays-utils.service';
-import {debounceTime, distinctUntilChanged, startWith} from 'rxjs';
+import {debounceTime, distinctUntilChanged, startWith, Subject, take, takeUntil} from 'rxjs';
 import { MatButton } from '@angular/material/button';
 import { FiltersService } from '../../../../shared/services/filters.service';
 
@@ -19,7 +19,7 @@ import { FiltersService } from '../../../../shared/services/filters.service';
   templateUrl: './analysis-form-header.component.html',
   styleUrl: './analysis-form-header.component.css',
 })
-export class AnalysisFormHeaderComponent implements OnInit {
+export class AnalysisFormHeaderComponent implements OnInit, OnDestroy {
   @Output() setFilterOptions: EventEmitter<IAnalysisFilterOptionsModel> =
     new EventEmitter<IAnalysisFilterOptionsModel>();
 
@@ -28,6 +28,9 @@ export class AnalysisFormHeaderComponent implements OnInit {
   idsSelectOptions: number[];
   subjectsSelectOptions: string[];
 
+  // unsubscribe
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+
   constructor(
     private studentsDataService: StudentsHttpDummyDataService,
     private filtersService: FiltersService,
@@ -35,12 +38,15 @@ export class AnalysisFormHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.initAnalysisForm();
-    this.studentsDataService.getStudents().subscribe(students => {
-      this.students = students;
-    });
+    this.subscribeStudentsDataService();
     this.initIdsSelectOptions();
     this.initSubjectsSelectOptions();
     this.subscribeAnalysisFormChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   initAnalysisForm(): void {
@@ -51,6 +57,12 @@ export class AnalysisFormHeaderComponent implements OnInit {
 
     const filters = this.filtersService.getAnalysisFilters();
     if (filters) this.updateAnalysisForm(filters);
+  }
+
+  subscribeStudentsDataService(): void {
+    this.studentsDataService.getStudents().pipe(take(1)).subscribe(students => {
+      this.students = students;
+    });
   }
 
   initIdsSelectOptions(): void {
@@ -68,7 +80,7 @@ export class AnalysisFormHeaderComponent implements OnInit {
 
   subscribeAnalysisFormChanges(): void {
     this.analysisForm.valueChanges
-      .pipe(startWith(this.analysisForm.value) ,debounceTime(500), distinctUntilChanged())
+      .pipe(takeUntil(this.ngUnsubscribe), startWith(this.analysisForm.value) ,debounceTime(500), distinctUntilChanged())
       .subscribe(analysisFilters => {
         this.filtersService.setAnalysisFilters(analysisFilters);
         this.setFilterOptions.emit(
