@@ -2,7 +2,6 @@
 import {
   IAnalysisChartDataModel,
   IAnalysisFilterOptionsModel,
-  IFilterOverTimeValueModel
 } from "../models/i-analysis-view.model";
 import {IStudentElementModel} from "../../../shared/models/i-student-data.model";
 

@@ -51,7 +51,7 @@ export class AnalysisChartLineComponent  {
     [key:string] : IAnalysisChartLineStudentExams[]
   } =
     // run on the above object and reduce the array to calc the average grade for each tests at the time
-    s.reduce((p,c,i) => {
+    s.reduce((p,c) => {
         if (p.hasOwnProperty(c.name)){
           p[c.name].push(c)
         }else {
@@ -65,7 +65,7 @@ export class AnalysisChartLineComponent  {
   studentsExamArray[k]=studentsExamArray[k]?.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 })
 
-  const newGradeArr =   Object.keys(studentsExamArray).reduce((pp,cc,ii)=> {
+  const newGradeArr =   Object.keys(studentsExamArray).reduce((pp,cc)=> {
     pp.push({
       id: cc ,
       'exams':studentsExamArray?.[cc]?.reduce((ppp,ccc,iii)=> {

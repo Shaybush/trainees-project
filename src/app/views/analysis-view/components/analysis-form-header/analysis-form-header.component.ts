@@ -1,17 +1,16 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {
   FormInputMultiselectComponent
 } from "../../../../shared/components/form/form-input-multiselect/form-input-multiselect.component";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {
-  IAnalysisChartDataModel,
   IAnalysisFilterOptionsModel,
   IAnalysisFormModel
 } from "../../models/i-analysis-view.model";
 import {IStudentElementModel} from "../../../../shared/models/i-student-data.model";
 import {StudentsHttpDummyDataService} from "../../../../shared/services/students-http-dummy-data.service";
 import {ArrayUtilsService} from "../../../../shared/services/util/arrays-utils.service";
-import {debounceTime, distinctUntilChanged, startWith} from "rxjs";
+import {debounceTime, distinctUntilChanged} from "rxjs";
 import {MatButton} from "@angular/material/button";
 import {FiltersService} from "../../../../shared/services/filters.service";
 
