@@ -46,5 +46,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.ACTIONS_PAT }}
-#          publish_dir: ./ng-deploy/browser
+          publish_dir: ./
           publish_branch: gb-pages
