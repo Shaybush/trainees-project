@@ -1,0 +1,19 @@
+<div class="form-input-multiselect-wrapper">
+  <mat-form-field>
+    <mat-label>{{ placeHolder }}</mat-label>
+    <mat-select [formControl]="optionControl" multiple>
+      <mat-select-trigger>
+        {{optionControl.value?.[0] || ''}}
+        @if ((optionControl.value?.length || 0) > 1) {
+          <span class="example-additional-selection">
+          (+{{(optionControl.value?.length || 0) - 1}} {{optionControl.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+        }
+      </mat-select-trigger>
+      @for (option of optionList; track option) {
+        <mat-option [value]="option">{{option}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+

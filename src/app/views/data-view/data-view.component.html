@@ -1,0 +1,12 @@
+<div class="data-view-wrapper p-3">
+  <app-data-header  (applyFilter)="applyFilter($event)" (openDetailsCard)="openDetailsCard($event)" />
+  <app-data-table
+    [displayedColumns]="displayedColumns"
+                  [dataSource]="dataSource"
+                  (removeStudent)="removeStudent($event)"
+                  (openDetailsCard)="openDetailsCard($event)"
+  />
+  @if (isDetailsCardOpen) {
+    <app-data-details-card  (setData)="setStudents($event)" [chosenStudent]="chosenStudent" (closeDetailsCard)="closeDetailsCard()"/>
+  }
+</div>
