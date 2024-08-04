@@ -4,6 +4,8 @@ This application is designed to manage trainees seamless and efficient.
 
 Project Pages: Data, Analysis, Monitor.
 
+[demo site](https://shaybush.github.io/trainees-project/)
+
 ### Installation + Running The Application
 
 1. Clone the repository to your local machine:
