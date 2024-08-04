@@ -1,0 +1,27 @@
+<div class="monitor-form-header-wrapper p-3">
+  <form [formGroup]="monitorForm">
+    <!-- show all button -->
+    <div style="display: flex; justify-content: end; align-items: center">
+      <button type="reset" (click)="resetForm($event)" mat-button style="text-decoration: underline; color: #0074D9;">show all</button>
+    </div>
+
+    <!-- ids -->
+    <div class="monitor-form-ids d-flex align-items-center">
+      <label class="m-r-3">IDs: </label>
+      <app-form-input-multiselect [optionList]="idsSelectOptions" [optionControl]="monitorForm.controls.ids" placeHolder="Ids" />
+    </div>
+
+    <!-- names -->
+    <div class="monitor-form-names d-flex align-items-center">
+      <label class="m-r-3">Names: </label>
+      <app-form-input-multiselect [optionList]="namesSelectOptions" [optionControl]="monitorForm.controls.names" placeHolder="Names"/>
+    </div>
+
+    <!-- failed / passed -->
+    <div class="monitor-form-state">
+      <label>State:</label>
+      <mat-checkbox [formControl]="monitorForm.controls.isPassed">Passed</mat-checkbox>
+      <mat-checkbox [formControl]="monitorForm.controls.isFailed">Failed</mat-checkbox>
+    </div>
+  </form>
+</div>

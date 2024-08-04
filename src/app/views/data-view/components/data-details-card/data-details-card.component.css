@@ -1,0 +1,49 @@
+.data-details-card-wrapper {
+  .data-details-card-header {
+    position: relative;
+    & > h2 {
+      text-align: center;
+    }
+
+    .data-details-card-header-icon-close {
+      position: absolute;
+      left: 0;
+      top: 0;
+      cursor: pointer;
+      color: #ff4081;
+    }
+  }
+  .data-details-card-body {
+    display: flex;
+    .data-details-card-left-side {
+      width: 50%;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .data-details-card-left-side {
+      width: 50%;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .data-details-input {
+      width: 100%;
+    }
+  }
+
+  .data-details-card-button {
+    color: #ff4081;
+    width: 100%;
+    background: #303030;
+
+    &:disabled {
+      background: rgba(48, 48, 48, 0.6);
+      cursor: not-allowed !important;
+    }
+  }
+}

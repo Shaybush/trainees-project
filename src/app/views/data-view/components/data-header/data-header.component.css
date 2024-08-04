@@ -1,0 +1,11 @@
+.data-header-wrapper {
+  .data-header-search-input {
+    max-width: 400px;
+    min-width: 200px;
+  }
+
+  .data-header-button {
+    color: #ff4081;
+    width: 300px;
+  }
+}
