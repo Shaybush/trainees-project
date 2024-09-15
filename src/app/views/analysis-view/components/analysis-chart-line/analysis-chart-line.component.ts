@@ -45,55 +45,58 @@ export class AnalysisChartLineComponent {
     });
   }
 
-  setExam(students: IStudentElementModel[]): IAnalysisChartLineStudentExamsWithIdModel[] {
-    // create json with student id (name) and exam array for each student
-    const studentsExamArray: {
-      [key: string]: IAnalysisChartLineStudentExams[];
-    } =
-      // run on the above object and reduce the array to calc the average grade for each tests at the time
-      students.reduce((p, c) => {
-        if (p.hasOwnProperty(c.name)) {
-          p[c.name].push(c);
-        } else {
-          p[c.name] = [c];
-        }
-        return p;
-      }, {});
-    // sort students array exams
-    Object.keys(studentsExamArray).forEach(k => {
-      studentsExamArray[k] = studentsExamArray[k]?.sort(
+  private setExam(students: IStudentElementModel[]): IAnalysisChartLineStudentExamsWithIdModel[] {
+    const studentsExamArray = this.groupStudentsExamsByName(students);
+    this.sortStudentExams(studentsExamArray);
+    return this.calculateAverageGrades(studentsExamArray);
+  }
+
+  private groupStudentsExamsByName(students: IStudentElementModel[]): { [key: string]: IAnalysisChartLineStudentExams[] } {
+    return students.reduce((acc, student) => {
+      if (acc.hasOwnProperty(student.name)) {
+        acc[student.name].push(student);
+      } else {
+        acc[student.name] = [student];
+      }
+      return acc;
+    }, {} as { [key: string]: IAnalysisChartLineStudentExams[] });
+  }
+
+  private sortStudentExams(studentsExamArray: { [key: string]: IAnalysisChartLineStudentExams[] }) {
+    Object.keys(studentsExamArray).forEach(studentName => {
+      studentsExamArray[studentName] = studentsExamArray[studentName].sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
       );
     });
-
-    const newGradeArr = Object.keys(studentsExamArray).reduce((pp, cc) => {
-      pp.push({
-        id: cc,
-        exams: studentsExamArray?.[cc]?.reduce(
-          (ppp, ccc, iii) => {
-            if (iii) {
-              ppp?.push({
-                date: ccc?.date,
-                grade:
-                  (ppp.at(iii - 1)?.grade * iii + (ccc as any)?.grade) /
-                  (iii + 1),
-              });
-            } else {
-              ppp?.push({
-                date: ccc?.date,
-                grade: ccc?.grade,
-              });
-            }
-            return ppp;
-          },
-          [] as IAnalysisChartLineStudentExamsWithIdModel['exams'],
-        ),
-      });
-      return pp;
-    }, [] as IAnalysisChartLineStudentExamsWithIdModel[]);
-    return newGradeArr;
   }
-  chartOptionInit() {
+
+  private calculateAverageGrades(studentsExamArray: { [key: string]: IAnalysisChartLineStudentExams[] }): IAnalysisChartLineStudentExamsWithIdModel[] {
+    return Object.keys(studentsExamArray).reduce((result, studentName) => {
+      const studentExams = studentsExamArray[studentName];
+      const examsWithAverages = studentExams.reduce((examResult, exam, index) => {
+        const previousGrade = index > 0 ? examResult[index - 1].grade : 0;
+        const averageGrade = index > 0
+          ? (previousGrade * index + exam.grade) / (index + 1)
+          : exam.grade;
+
+        examResult.push({
+          date: exam.date,
+          grade: Math.floor(averageGrade)
+        });
+
+        return examResult;
+      }, [] as IAnalysisChartLineStudentExamsWithIdModel['exams']);
+
+      result.push({
+        id: studentName,
+        exams: examsWithAverages,
+      });
+
+      return result;
+    }, [] as IAnalysisChartLineStudentExamsWithIdModel[]);
+  }
+
+  private chartOptionInit() {
     this.chartOption = {
       tooltip: {
         trigger: 'axis',
