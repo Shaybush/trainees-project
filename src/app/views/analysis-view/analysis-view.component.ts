@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { AnalysisFormHeaderComponent } from './components/analysis-form-header/analysis-form-header.component';
 import {
@@ -20,7 +20,7 @@ import {
   filterStudentAvgByIdChartData,
 } from './filters/analysis-chart-filters';
 import { AnalysisChartLineComponent } from './components/analysis-chart-line/analysis-chart-line.component';
-import {Subject, takeUntil} from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: 'app-analysis-view',
@@ -48,13 +48,13 @@ export class AnalysisViewComponent implements OnInit, OnDestroy {
   // unsubscribe
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private studentsDataService: StudentsHttpDummyDataService) {}
+  constructor(private studentsDataService: StudentsHttpDummyDataService) { }
 
   ngOnInit(): void {
     this.studentsDataService.getStudents().pipe(takeUntil(this.ngUnsubscribe)).subscribe(students => {
       this.students = students;
 
-      // todo - improve
+      // TODO - improve
       this.perSubjectChartData = filterPerSubjectChartData(this.students);
       this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(this.students);
 
@@ -78,13 +78,13 @@ export class AnalysisViewComponent implements OnInit, OnDestroy {
       this.perSubjectChartData = filterPerSubjectChartData(this.students, filterOptions);
 
       this.chartsInfo = this.chartsInfo.map(chartItem => {
-        if(chartItem.id === 2){
-          return {...chartItem, data: filterStudentAvgByIdChartData(this.students, filterOptions)}
+        if (chartItem.id === 2) {
+          return { ...chartItem, data: filterStudentAvgByIdChartData(this.students, filterOptions) }
         }
-          else if(chartItem.id === 3){
-          return {...chartItem, data: filterPerSubjectChartData(this.students, filterOptions)}
+        else if (chartItem.id === 3) {
+          return { ...chartItem, data: filterPerSubjectChartData(this.students, filterOptions) }
         }
-          return chartItem;
+        return chartItem;
       })
     }
   }

@@ -31,7 +31,7 @@ export class LocalStorageUtilsService {
   /**
    * Sets object value to storage.
    * */
-  static setLocalStorageObjectAsValue(key: any, value: any): void {
+  static setLocalStorageObjectAsValue<K extends ELocalKey, T>(key: K, value: T): void {
     const valueAsString = JSON.stringify(value);
     const fullKey = this.getFullLocalStorageKey(key);
     localStorage.setItem(fullKey, valueAsString);

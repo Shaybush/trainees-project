@@ -5,7 +5,7 @@ export class ArrayUtilsService {
   /**
    * Remove duplicates from array using Set
    * */
-  static removeDuplicates(array: any[]) {
+  static removeDuplicates<T>(array: T[]) {
     return [...new Set(array)];
   }
 }

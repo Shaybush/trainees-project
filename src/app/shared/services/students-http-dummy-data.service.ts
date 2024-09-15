@@ -11,7 +11,7 @@ import { TableFiltersServiceService } from '../../core/services/filter.service';
   providedIn: 'root',
 })
 export class StudentsHttpDummyDataService {
-  constructor(private filterService: TableFiltersServiceService) {}
+  constructor(private filterService: TableFiltersServiceService) { }
   private InitialStudents: IStudentElementModel[] =
     (LocalStorageUtilsService.getSessionValueAsObject(
       ELocalKey.students_ar,
@@ -62,13 +62,11 @@ export class StudentsHttpDummyDataService {
   putStudent(
     student: Partial<IStudentElementModel>,
   ): Observable<IStudentElementModel[]> {
-    const userToEdit = this.currentStudents.findIndex(i => i.id === student.id);
-    Object.keys(student).reduce((acc, key) => {
-      if (this.currentStudents[userToEdit].hasOwnProperty(key)) {
-        this.currentStudents[userToEdit][key] = student[key];
-      }
-      return acc;
-    }, {});
+    const userToEdit = this.currentStudents.findIndex(currentStudent => currentStudent.id === student.id);
+    Object.keys(student).forEach((studentKey) => {
+      if (this.currentStudents[userToEdit].hasOwnProperty(studentKey))
+        this.currentStudents[userToEdit][studentKey] = student[studentKey];
+    });
     this.updateStudentsCollection(this.currentStudents);
     return of(this.currentStudents);
   }
@@ -79,18 +77,16 @@ export class StudentsHttpDummyDataService {
     const newStudent: IStudentElementModel = {
       ...student,
       id: this.currentStudents.sort((a, b) => a.id - b.id)?.at(-1).id + 1,
-    } as IStudentElementModel;
+    };
     this.currentStudents.push(newStudent);
     this.updateStudentsCollection(this.currentStudents);
     return of(this.currentStudents);
   }
 
   public deleteStudent(
-    student: IStudentElementModel,
+    studentId: number,
   ): Observable<IStudentElementModel[]> {
-    this.currentStudents = this.currentStudents.filter(
-      i => i?.id !== student.id,
-    );
+    this.currentStudents = this.currentStudents.filter(student => student?.id !== studentId);
     this.updateStudentsCollection(this.currentStudents);
     return of(this.currentStudents);
   }

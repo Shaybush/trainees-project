@@ -1,8 +1,4 @@
-import {
-  Component, OnDestroy,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { IStudentElementModel } from '../../shared/models/i-student-data.model';
 import { StudentsHttpDummyDataService } from '../../shared/services/students-http-dummy-data.service';
@@ -11,7 +7,7 @@ import { DataHeaderComponent } from './components/data-header/data-header.compon
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { displayedColumnsConfig } from './config/data-table.config';
-import {Subject, take, takeUntil} from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-data-view',
@@ -30,15 +26,14 @@ import {Subject, take, takeUntil} from 'rxjs';
 export class DataViewComponent implements OnInit, OnDestroy {
   isDetailsCardOpen: boolean = false;
   displayedColumns: string[] = displayedColumnsConfig;
-  dataSource: MatTableDataSource<IStudentElementModel> = new MatTableDataSource<IStudentElementModel>();
+  dataSource: MatTableDataSource<IStudentElementModel> =
+    new MatTableDataSource<IStudentElementModel>();
   chosenStudent: IStudentElementModel | null = null;
 
   // unsubscribe
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(
-    private studentsDataService: StudentsHttpDummyDataService,
-  ) {}
+  constructor(private studentsDataService: StudentsHttpDummyDataService) { }
 
   ngOnInit(): void {
     this.subscribeStudents();
@@ -50,9 +45,12 @@ export class DataViewComponent implements OnInit, OnDestroy {
   }
 
   subscribeStudents(): void {
-    this.studentsDataService.getStudents().pipe(takeUntil(this.ngUnsubscribe)).subscribe(students => {
-      this.dataSource.data = students;
-    });
+    this.studentsDataService
+      .getStudents()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(students => {
+        this.dataSource.data = students;
+      });
   }
 
   setStudents(students: IStudentElementModel[]): void {
@@ -61,8 +59,8 @@ export class DataViewComponent implements OnInit, OnDestroy {
 
   removeStudent(student: IStudentElementModel): void {
     this.studentsDataService
-      .deleteStudent(student)
-      .pipe(take(1))
+      .deleteStudent(student.id)
+      .pipe(take(1)) // take 1 is taking the first value then unsubscribe.
       .subscribe(updatedStudents => (this.dataSource.data = updatedStudents));
   }
 
