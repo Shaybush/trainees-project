@@ -7,4 +7,8 @@ export class ObjectUtilsService {
   static clone<T>(obj: T): T {
     return obj ? JSON.parse(JSON.stringify(obj)) : null;
   }
+
+  static isCopy<T>(firstObject: T, secondObject: T): boolean {
+    return JSON.stringify(firstObject) === JSON.stringify(secondObject);
+  }
 }

@@ -43,3 +43,10 @@ export interface IAnalysisChartLineStudentExams {
   date: `${number}-${number}-${number}`;
   grade: number;
 }
+
+export enum EAnalysisChartID {
+  ANALYSIS_ALL_STUDENT_CHART = 1,
+  ANALYSIS_STUDENT_AVG_CHART = 2,
+  ANALYSIS_SELECTED_SUBJECT_GRADES_AVG_CHART = 3,
+
+}

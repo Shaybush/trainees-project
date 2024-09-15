@@ -7,17 +7,20 @@
       <!-- charts -->
       <div cdkDropList class="analysis-charts-row" (cdkDropListDropped)="drop($event)">
         @for (chart of chartsInfo; track chart.name; let last=$last) {
-          <div class="box" cdkDrag>
-            <h2 class="header">{{ chart.name }}</h2>
-            <div class="context">
-              @if (chart.id === 1){
-                <app-analysis-chart-line [hideData]="last"/>
-              }
-              @else {
-                <app-analysis-chart-bar [hideData]="last" [chartData]="chart.data" />
-              }
-            </div>
+        <div class="box" cdkDrag>
+          <h2 class="header">{{ chart.name }}</h2>
+          <div class="context">
+            @if (chart.id === eChartId.ANALYSIS_ALL_STUDENT_CHART) {
+            <app-analysis-chart-line [hideData]="last" />
+            }
+            @else if (chart.id === eChartId.ANALYSIS_STUDENT_AVG_CHART) {
+            <app-analysis-student-average-chart-bar [hideData]="last" [chartData]="chart.data" />
+            }
+            @else {
+            <app-analysis-grades-average-chart-bar [hideData]="last" [chartData]="chart.data" />
+            }
           </div>
+        </div>
         }
       </div>
 

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { AnalysisFormHeaderComponent } from './components/analysis-form-header/analysis-form-header.component';
 import {
+  EAnalysisChartID,
   IAnalysisChartDataModel,
   IAnalysisFilterOptionsModel,
   IChartsInfoModel,
@@ -14,13 +15,14 @@ import {
   CdkDrag,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
-import { AnalysisChartBarComponent } from './components/analysis-chart-bar/analysis-chart-bar.component';
 import {
   filterPerSubjectChartData,
   filterStudentAvgByIdChartData,
 } from './filters/analysis-chart-filters';
 import { AnalysisChartLineComponent } from './components/analysis-chart-line/analysis-chart-line.component';
 import { Subject, takeUntil } from "rxjs";
+import { AnalysisStudentAverageChartBarComponent } from "./components/analysis-student-average-chart-bar/analysis-student-average-chart-bar.component";
+import { AnalysisGradesAverageChartBarComponent } from "./components/analysis-grades-average-chart-bar/analysis-grades-average-chart-bar.component";
 
 @Component({
   selector: 'app-analysis-view',
@@ -31,8 +33,9 @@ import { Subject, takeUntil } from "rxjs";
     AnalysisFormHeaderComponent,
     CdkDropList,
     CdkDrag,
-    AnalysisChartBarComponent,
     AnalysisChartLineComponent,
+    AnalysisStudentAverageChartBarComponent,
+    AnalysisGradesAverageChartBarComponent
   ],
   templateUrl: './analysis-view.component.html',
   styleUrl: './analysis-view.component.css',
@@ -47,6 +50,9 @@ export class AnalysisViewComponent implements OnInit, OnDestroy {
 
   // unsubscribe
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+  // enum 
+  eChartId = EAnalysisChartID
 
   constructor(private studentsDataService: StudentsHttpDummyDataService) { }
 
@@ -74,15 +80,15 @@ export class AnalysisViewComponent implements OnInit, OnDestroy {
 
   setFilterOptions(filterOptions: IAnalysisFilterOptionsModel): void {
     if (this.students) {
-      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(this.students, filterOptions);
-      this.perSubjectChartData = filterPerSubjectChartData(this.students, filterOptions);
+      this.studentsAvgByIdChartData = filterStudentAvgByIdChartData(this.students, filterOptions.ids);
+      this.perSubjectChartData = filterPerSubjectChartData(this.students, filterOptions.subjects);
 
       this.chartsInfo = this.chartsInfo.map(chartItem => {
-        if (chartItem.id === 2) {
-          return { ...chartItem, data: filterStudentAvgByIdChartData(this.students, filterOptions) }
+        if (chartItem.id === EAnalysisChartID.ANALYSIS_STUDENT_AVG_CHART) {
+          return { ...chartItem, data: this.studentsAvgByIdChartData }
         }
-        else if (chartItem.id === 3) {
-          return { ...chartItem, data: filterPerSubjectChartData(this.students, filterOptions) }
+        else if (chartItem.id === EAnalysisChartID.ANALYSIS_SELECTED_SUBJECT_GRADES_AVG_CHART) {
+          return { ...chartItem, data: this.perSubjectChartData }
         }
         return chartItem;
       })
@@ -92,16 +98,16 @@ export class AnalysisViewComponent implements OnInit, OnDestroy {
   initChartsInfo(): void {
     this.chartsInfo = [
       {
-        id: 1,
+        id: EAnalysisChartID.ANALYSIS_ALL_STUDENT_CHART,
         name: "Chart 1 - All Student's Averages",
       },
       {
-        id: 2,
+        id: EAnalysisChartID.ANALYSIS_STUDENT_AVG_CHART,
         name: 'Chart 2 - Selected IDs Student Average',
         data: this.studentsAvgByIdChartData,
       },
       {
-        id: 3,
+        id: EAnalysisChartID.ANALYSIS_SELECTED_SUBJECT_GRADES_AVG_CHART,
         name: 'Chart 3 - Selected Subject Grades Average',
         data: this.perSubjectChartData,
       },

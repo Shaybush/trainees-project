@@ -1,23 +1,27 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EChartsOption } from 'echarts';
 import {
   IAnalysisChartDataModel,
   IChartDataValuesModel,
 } from '../../models/i-analysis-view.model';
 import { NgxEchartsDirective, provideEcharts } from 'ngx-echarts';
+import { ObjectUtilsService } from 'src/app/shared/services/util/object-utils.service';
 
 @Component({
-  selector: 'app-analysis-chart-bar',
+  selector: 'app-analysis-student-average-chart-bar',
   standalone: true,
   imports: [NgxEchartsDirective],
   providers: [provideEcharts()],
-  templateUrl: './analysis-chart-bar.component.html',
-  styleUrl: './analysis-chart-bar.component.css',
+  templateUrl: './analysis-student-average-chart-bar.component.html',
+  styleUrl: './analysis-student-average-chart-bar.component.css',
 })
-export class AnalysisChartBarComponent {
+export class AnalysisStudentAverageChartBarComponent {
   @Input({ required: true })
-  set chartData(value: IAnalysisChartDataModel[]) {
-    this.initChartOptions(value);
+  set chartData(data: IAnalysisChartDataModel[]) {
+    if (!ObjectUtilsService.isCopy(this.prevData, data))
+      this.initChartOptions(data);
+
+    this.prevData = data;
   }
 
   @Input()
@@ -36,6 +40,7 @@ export class AnalysisChartBarComponent {
   isLoading?: boolean;
   private _hideData: boolean;
   chartOption: EChartsOption;
+  prevData: IAnalysisChartDataModel[]
 
   private initChartOptions(chartData: IAnalysisChartDataModel[]): void {
     this.chartOption = {

@@ -39,19 +39,19 @@ export class AnalysisChartLineComponent {
   ) {
     firstValueFrom(
       this.studentsHttpDummyDataService.getStudents().pipe(take(1)),
-    ).then(x => {
-      this.studentExams = this.setExam(x);
+    ).then(students => {
+      this.studentExams = this.setExam(students);
       this.chartOptionInit();
     });
   }
 
-  setExam(s: IStudentElementModel[]) {
+  setExam(students: IStudentElementModel[]): IAnalysisChartLineStudentExamsWithIdModel[] {
     // create json with student id (name) and exam array for each student
     const studentsExamArray: {
       [key: string]: IAnalysisChartLineStudentExams[];
     } =
       // run on the above object and reduce the array to calc the average grade for each tests at the time
-      s.reduce((p, c) => {
+      students.reduce((p, c) => {
         if (p.hasOwnProperty(c.name)) {
           p[c.name].push(c);
         } else {

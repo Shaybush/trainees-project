@@ -18,11 +18,11 @@ import { IStudentElementModel } from '../../../shared/models/i-student-data.mode
 /**
  * filter per subject means all the chosen subject and the average in each subject
  * */
-export function filterPerSubjectChartData(students: IStudentElementModel[], filterOptions?: IAnalysisFilterOptionsModel): IAnalysisChartDataModel[] {
+export function filterPerSubjectChartData(students: IStudentElementModel[], filteredSubjects?: string[]): IAnalysisChartDataModel[] {
   let subjects: string[] | null = null;
 
-  if (filterOptions && filterOptions.subjects?.length) {
-    subjects = filterOptions.subjects.map(subject => subject.toLowerCase());
+  if (filteredSubjects && filteredSubjects?.length) {
+    subjects = filteredSubjects.map(subject => subject.toLowerCase());
   }
 
   const result = students.reduce(
@@ -53,12 +53,12 @@ export function filterPerSubjectChartData(students: IStudentElementModel[], filt
  * */
 export function filterStudentAvgByIdChartData(
   students: IStudentElementModel[],
-  filterOptions?: IAnalysisFilterOptionsModel,
+  filterIds?: number[],
 ): IAnalysisChartDataModel[] {
   let ids: number[] | null = null;
 
-  if (filterOptions && filterOptions.ids?.length) {
-    ids = filterOptions.ids.map(id => id);
+  if (filterIds && filterIds?.length) {
+    ids = filterIds.map(id => id);
   }
 
   const result = students.reduce(
